@@ -1,6 +1,6 @@
 ## Setup Steps
 
-### Create NextJS App
+### 1. Create NextJS App
 
 1. Run `npx create-next-app@latest`
 
@@ -15,7 +15,7 @@
     Would you like to customize the import alias (`@/*` by default)? No
     ```
 
-### Install [HeroUI](https://www.heroui.com/docs/guide/installation#manual-installation) and [React Icons](https://react-icons.github.io/react-icons/)
+### 2. Install [HeroUI](https://www.heroui.com/docs/guide/installation#manual-installation) and [React Icons](https://react-icons.github.io/react-icons/)
 
 I used [Manual Installation](https://www.heroui.com/docs/guide/installation#manual-installation) and [Tailwind v4 Migration Guide](https://www.heroui.com/docs/guide/tailwind-v4) because I didn't start the project with HeroUI and this project uses Tailwind 4.
 
@@ -44,3 +44,16 @@ I used [Manual Installation](https://www.heroui.com/docs/guide/installation#manu
     	</body>
     </html>
     ```
+
+#### Note
+
+When using a component, remember to `import` from `@heroui/<component-folder>` instead of `@heroui/react` since NextJS is SSR.
+
+For example:
+
+```tsx
+import { Button } from "@heroui/button";
+import { Avatar } from "@heroui/avatar";
+```
+
+In the `node_modules/@heroui/react`, it has `"use strict";`, but `node_modules/@heroui/<component-folder>` has `"use client"; "use strict";`.
