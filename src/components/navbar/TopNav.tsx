@@ -31,14 +31,25 @@ const TopNav = () => {
 				</NavbarItem>
 			</NavbarContent>
 			<NavbarContent justify="end">
-				<Button variant="bordered" className="text-white">
+				<Button
+					as={Link}
+					href="/login"
+					variant="bordered"
+					className="text-white"
+				>
 					Login
 				</Button>
-				<Button variant="bordered" className="text-white">
+				<Button
+					as={Link}
+					href="/register"
+					variant="bordered"
+					className="text-white"
+				>
 					Register
 				</Button>
 			</NavbarContent>
 		</Navbar>
 	);
 };
+
 export default TopNav;
