@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Setup Steps
 
-## Getting Started
+### Create NextJS App
 
-First, run the development server:
+1. Run `npx create-next-app@latest`
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+    ```bash
+    What is your project named? next-match-app
+    Would you like to use TypeScript? Yes
+    Would you like to use ESLint? Yes
+    Would you like to use Tailwind CSS? Yes
+    Would you like your code inside a `src/` directory? Yes
+    Would you like to use App Router? (recommended) Yes
+    Would you like to use Turbopack for `next dev`?  Yes
+    Would you like to customize the import alias (`@/*` by default)? No
+    ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Install [HeroUI](https://www.heroui.com/docs/guide/installation#manual-installation) and [React Icons](https://react-icons.github.io/react-icons/)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+I used [Manual Installation](https://www.heroui.com/docs/guide/installation#manual-installation) and [Tailwind v4 Migration Guide](https://www.heroui.com/docs/guide/tailwind-v4) because I didn't start the project with HeroUI and this project uses Tailwind 4.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Run `npm install @heroui/react@beta framer-motion react-icons`
+2. Follow the [Tailwind v4 Migration Guide](https://www.heroui.com/docs/guide/tailwind-v4) to set up HeroUI
+3. Create `src/components/Providers.tsx` and use the following code:
 
-## Learn More
+    ```tsx
+    "use client";
 
-To learn more about Next.js, take a look at the following resources:
+    import { HeroUIProvider } from "@heroui/react";
+    import { ReactNode } from "react";
 
--   [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
--   [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+    const Providers = ({ children }: { children: ReactNode }) => {
+    	return <HeroUIProvider>{children}</HeroUIProvider>;
+    };
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+    export default Providers;
+    ```
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. Update the `return` statement in `src/app/layout.tsx` as shown:
+    ```tsx
+    <html lang="en">
+    	<body>
+    		<Providers>{children}</Providers>
+    	</body>
+    </html>
+    ```
