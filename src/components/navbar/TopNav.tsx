@@ -1,7 +1,14 @@
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem } from "@heroui/navbar";
+import { Navbar, NavbarBrand, NavbarContent } from "@heroui/navbar";
 import { Button } from "@heroui/button";
 import Link from "next/link";
 import { GiMatchTip } from "react-icons/gi";
+import NavLink from "./NavLink";
+
+const navLinks = [
+	{ href: "/members", label: "Matches" },
+	{ href: "/lists", label: "Lists" },
+	{ href: "/messages", label: "Messages" },
+];
 
 const TopNav = () => {
 	return (
@@ -9,7 +16,12 @@ const TopNav = () => {
 			maxWidth="xl"
 			className="bg-gradient-to-r from-purple-400 to-purple-700"
 			classNames={{
-				item: ["text-xl", "text-white", "uppercase"],
+				item: [
+					"text-xl",
+					"text-white",
+					"uppercase",
+					"data-[active=true]:text-yellow-200",
+				],
 			}}
 		>
 			<NavbarBrand as={Link} href="/">
@@ -20,15 +32,9 @@ const TopNav = () => {
 				</div>
 			</NavbarBrand>
 			<NavbarContent justify="center">
-				<NavbarItem as={Link} href="/members">
-					Matches
-				</NavbarItem>
-				<NavbarItem as={Link} href="/lists">
-					Lists
-				</NavbarItem>
-				<NavbarItem as={Link} href="/messages">
-					Messages
-				</NavbarItem>
+				{navLinks.map(({ href, label }) => (
+					<NavLink key={href} href={href} label={label} />
+				))}
 			</NavbarContent>
 			<NavbarContent justify="end">
 				<Button
