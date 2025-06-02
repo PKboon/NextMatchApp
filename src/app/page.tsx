@@ -1,5 +1,5 @@
-import { Button } from "@heroui/button";
 import { Avatar } from "@heroui/avatar";
+import { Button } from "@heroui/button";
 
 export default function Home() {
 	return (

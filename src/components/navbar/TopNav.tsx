@@ -1,7 +1,8 @@
-import { Navbar, NavbarBrand, NavbarContent } from "@heroui/navbar";
 import { Button } from "@heroui/button";
+import { Navbar, NavbarBrand, NavbarContent } from "@heroui/navbar";
 import Link from "next/link";
 import { GiMatchTip } from "react-icons/gi";
+
 import NavLink from "./NavLink";
 
 const navLinks = [
