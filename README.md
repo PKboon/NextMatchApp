@@ -78,12 +78,10 @@ In the `node_modules/@heroui/react`, it has `"use strict";`, but `node_modules/@
 
    ```ts
    import { PrismaAdapter } from "@auth/prisma-adapter";
-   import { PrismaClient } from "@prisma/client";
    import NextAuth from "next-auth";
 
    import authConfig from "@/auth.config";
-
-   const prisma = new PrismaClient();
+   import { prisma } from "@/lib/prisma";
 
    export const {
    	handlers: { GET, POST },
@@ -96,6 +94,26 @@ In the `node_modules/@heroui/react`, it has `"use strict";`, but `node_modules/@
    ```
 
 6. Update `src/app/api/auth/[...nextauth]/route.ts` to:
+
    ```ts
    export { GET, POST } from "@/auth";
    ```
+
+7. Create a Postgres database with [NEON](https://neon.com/) and update the `DATABASE_URL` value in `.env`
+8. Create `src/lib/prisma.ts` with the following code:
+
+   ```ts
+   import { PrismaClient } from "@prisma/client";
+
+   const globalForPrisma = global as unknown as { prisma: PrismaClient };
+
+   export const prisma =
+   	globalForPrisma.prisma || new PrismaClient({ log: ["query"] });
+
+   if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+   ```
+
+9. Update `prisma/schema.prisma` (see [here](https://authjs.dev/getting-started/adapters/prisma#schema))
+10. Run `npx prisma generate`
+11. Run `npx prisma db push`
+12. Run `npx prisma studio` to see the tables
