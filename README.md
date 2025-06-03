@@ -64,6 +64,38 @@ import { Avatar } from "@heroui/avatar";
 
 In the `node_modules/@heroui/react`, it has `"use strict";`, but `node_modules/@heroui/<component-folder>` has `"use client"; "use strict";`.
 
-### 4. Install form related packages
+### 4. Install Form Packages
 
 1. Run `react-hook-form zod @hookform/resolvers`
+
+### 5. Setup Authentication and Database
+
+1. Follow [Auth.js setup steps](https://authjs.dev/getting-started/installation?framework=Next.js)
+2. Follow [Prisma Adapter installation commands](https://authjs.dev/getting-started/adapters/prisma#installation)
+3. Follow [Edge compatibility guide](https://authjs.dev/guides/edge-compatibility#split-config) (step 1 and 2)
+4. Run `npx prisma init` to initialize Prisma
+5. Update `src/auth.ts` to:
+
+   ```ts
+   import { PrismaAdapter } from "@auth/prisma-adapter";
+   import { PrismaClient } from "@prisma/client";
+   import NextAuth from "next-auth";
+
+   import authConfig from "@/auth.config";
+
+   const prisma = new PrismaClient();
+
+   export const {
+   	handlers: { GET, POST },
+   	auth,
+   } = NextAuth({
+   	adapter: PrismaAdapter(prisma),
+   	session: { strategy: "jwt" },
+   	...authConfig,
+   });
+   ```
+
+6. Update `src/app/api/auth/[...nextauth]/route.ts` to:
+   ```ts
+   export { GET, POST } from "@/auth";
+   ```
