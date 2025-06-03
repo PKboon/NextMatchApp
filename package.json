@@ -10,11 +10,14 @@
   },
   "dependencies": {
     "@heroui/react": "^2.8.0-beta.6",
+    "@hookform/resolvers": "^5.0.1",
     "framer-motion": "^12.15.0",
     "next": "15.3.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-icons": "^5.5.0"
+    "react-hook-form": "^7.57.0",
+    "react-icons": "^5.5.0",
+    "zod": "^3.25.49"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

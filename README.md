@@ -15,7 +15,13 @@
    Would you like to customize the import alias (`@/*` by default)? No
    ```
 
-### 2. Install [HeroUI](https://www.heroui.com/docs/guide/installation#manual-installation) and [React Icons](https://react-icons.github.io/react-icons/)
+### 2. Install [eslint-plugin-simple-import-sort](https://github.com/lydell/eslint-plugin-simple-import-sort)
+
+1. Run `npm install --save-dev eslint-plugin-simple-import-sort`
+2. Update `eslint.config.mjs` to [the code here](./eslint.config.mjs)
+3. Enable `eslint` in IDE
+
+### 3. Install [HeroUI](https://www.heroui.com/docs/guide/installation#manual-installation) and [React Icons](https://react-icons.github.io/react-icons/)
 
 I used [Manual Installation](https://www.heroui.com/docs/guide/installation#manual-installation) and [Tailwind v4 Migration Guide](https://www.heroui.com/docs/guide/tailwind-v4) because I didn't start the project with HeroUI and this project uses Tailwind 4.
 
@@ -57,3 +63,7 @@ import { Avatar } from "@heroui/avatar";
 ```
 
 In the `node_modules/@heroui/react`, it has `"use strict";`, but `node_modules/@heroui/<component-folder>` has `"use client"; "use strict";`.
+
+### 4. Install form related packages
+
+1. Run `react-hook-form zod @hookform/resolvers`
