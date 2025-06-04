@@ -86,6 +86,8 @@ In the `node_modules/@heroui/react`, it has `"use strict";`, but `node_modules/@
    export const {
    	handlers: { GET, POST },
    	auth,
+   	signIn,
+   	signOut,
    } = NextAuth({
    	adapter: PrismaAdapter(prisma),
    	session: { strategy: "jwt" },

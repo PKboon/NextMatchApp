@@ -3,24 +3,42 @@
 import { Button } from "@heroui/button";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { GiPadlock } from "react-icons/gi";
 
+import { signInUser } from "@/app/actions/authActions";
 import { TextInput } from "@/components/ui/TextInput";
 import { LoginSchema, loginSchema } from "@/lib/schemas/loginSchema";
 
 const LoginForm = () => {
+	const router = useRouter();
+
 	const {
 		control,
 		handleSubmit,
-		formState: { isValid },
+		setError,
+		formState: { errors, isValid, isSubmitting },
 	} = useForm<LoginSchema>({
 		resolver: zodResolver(loginSchema),
 		mode: "onTouched",
 	});
 
-	const onSubmit = (data: LoginSchema) => {
-		console.log(data);
+	const onSubmit = async (data: LoginSchema) => {
+		const result = await signInUser(data);
+
+		if (result.status === "success") {
+			router.push("/members");
+		} else {
+			if (Array.isArray(result.error)) {
+				result.error.forEach((e) => {
+					const fieldName = e.path.join(".") as "email" | "password";
+					setError(fieldName, { message: e.message });
+				});
+			} else {
+				setError("root.serverError", { message: result.error });
+			}
+		}
 	};
 
 	return (
@@ -44,7 +62,13 @@ const LoginForm = () => {
 							name="password"
 							type="password"
 						/>
+						{errors.root?.serverError && (
+							<p className="text-danger text-sm">
+								{errors.root.serverError.message}
+							</p>
+						)}
 						<Button
+							isLoading={isSubmitting}
 							isDisabled={!isValid}
 							fullWidth
 							color="secondary"
