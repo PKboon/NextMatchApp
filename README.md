@@ -100,20 +100,22 @@ In the `node_modules/@heroui/react`, it has `"use strict";`, but `node_modules/@
    ```
 
 7. Create a Postgres database with [NEON](https://neon.com/) and update the `DATABASE_URL` value in `.env`
-8. Create `src/lib/prisma.ts` with the following code:
 
-   ```ts
-   import { PrismaClient } from "@prisma/client";
+8. Update `prisma/schema.prisma` (see [here](https://authjs.dev/getting-started/adapters/prisma#schema))
+9. Run `npx prisma generate`
+10. Create `src/lib/prisma.ts` with the following code:
 
-   const globalForPrisma = global as unknown as { prisma: PrismaClient };
+    ```ts
+    import { PrismaClient } from "../generated/prisma";
 
-   export const prisma =
-   	globalForPrisma.prisma || new PrismaClient({ log: ["query"] });
+    const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
-   if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
-   ```
+    export const prisma =
+    	globalForPrisma.prisma || new PrismaClient({ log: ["query"] });
 
-9. Update `prisma/schema.prisma` (see [here](https://authjs.dev/getting-started/adapters/prisma#schema))
-10. Run `npx prisma generate`
+    if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+    ```
+
 11. Run `npx prisma db push`
 12. Run `npx prisma studio` to see the tables
+13. Run `npm i bcryptjs` and `npm i -D @types/bcryptjs`
