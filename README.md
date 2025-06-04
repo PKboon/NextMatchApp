@@ -68,7 +68,7 @@ In the `node_modules/@heroui/react`, it has `"use strict";`, but `node_modules/@
 
 1. Run `react-hook-form zod @hookform/resolvers`
 
-### 5. Setup Authentication and Database
+### 5. Set up Authentication and Database
 
 1. Follow [Auth.js setup steps](https://authjs.dev/getting-started/installation?framework=Next.js)
 2. Follow [Prisma Adapter installation commands](https://authjs.dev/getting-started/adapters/prisma#installation)
@@ -121,3 +121,8 @@ In the `node_modules/@heroui/react`, it has `"use strict";`, but `node_modules/@
 11. Run `npx prisma db push`
 12. Run `npx prisma studio` to see the tables
 13. Run `npm i bcryptjs` and `npm i -D @types/bcryptjs`
+
+### Set up Session and Middleware
+
+1. Follow [Auth.js Session Management documentation](https://authjs.dev/getting-started/session-management/get-session) (both Next.js server and client)
+2. Follow [Next.js Middleware documentation](https://nextjs.org/docs/app/building-your-application/routing/middleware)

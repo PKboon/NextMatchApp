@@ -3,7 +3,7 @@
 import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
 
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 import { User } from "@/generated/prisma";
 import { prisma } from "@/lib/prisma";
 import { LoginSchema } from "@/lib/schemas/loginSchema";
@@ -35,6 +35,10 @@ export async function signInUser(
 
 		return { status: "error", error: "Something else went wrong" };
 	}
+}
+
+export async function signOutUser() {
+	await signOut({ redirectTo: "/" });
 }
 
 export async function registerUser(

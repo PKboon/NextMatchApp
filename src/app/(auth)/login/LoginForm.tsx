@@ -29,6 +29,7 @@ const LoginForm = () => {
 
 		if (result.status === "success") {
 			router.push("/members");
+			router.refresh();
 		} else {
 			if (Array.isArray(result.error)) {
 				result.error.forEach((e) => {
