@@ -15,7 +15,13 @@
    Would you like to customize the import alias (`@/*` by default)? No
    ```
 
-### 2. Install [HeroUI](https://www.heroui.com/docs/guide/installation#manual-installation) and [React Icons](https://react-icons.github.io/react-icons/)
+### 2. Install [eslint-plugin-simple-import-sort](https://github.com/lydell/eslint-plugin-simple-import-sort)
+
+1. Run `npm install --save-dev eslint-plugin-simple-import-sort`
+2. Update `eslint.config.mjs` to [the code here](./eslint.config.mjs)
+3. Enable `eslint` in IDE
+
+### 3. Install [HeroUI](https://www.heroui.com/docs/guide/installation#manual-installation) and [React Icons](https://react-icons.github.io/react-icons/)
 
 I used [Manual Installation](https://www.heroui.com/docs/guide/installation#manual-installation) and [Tailwind v4 Migration Guide](https://www.heroui.com/docs/guide/tailwind-v4) because I didn't start the project with HeroUI and this project uses Tailwind 4.
 
@@ -57,3 +63,66 @@ import { Avatar } from "@heroui/avatar";
 ```
 
 In the `node_modules/@heroui/react`, it has `"use strict";`, but `node_modules/@heroui/<component-folder>` has `"use client"; "use strict";`.
+
+### 4. Install Form Packages
+
+1. Run `react-hook-form zod @hookform/resolvers`
+
+### 5. Set up Authentication and Database
+
+1. Follow [Auth.js setup steps](https://authjs.dev/getting-started/installation?framework=Next.js)
+2. Follow [Prisma Adapter installation commands](https://authjs.dev/getting-started/adapters/prisma#installation)
+3. Follow [Edge compatibility guide](https://authjs.dev/guides/edge-compatibility#split-config) (step 1 and 2)
+4. Run `npx prisma init` to initialize Prisma
+5. Update `src/auth.ts` to:
+
+   ```ts
+   import { PrismaAdapter } from "@auth/prisma-adapter";
+   import NextAuth from "next-auth";
+
+   import authConfig from "@/auth.config";
+   import { prisma } from "@/lib/prisma";
+
+   export const {
+   	handlers: { GET, POST },
+   	auth,
+   	signIn,
+   	signOut,
+   } = NextAuth({
+   	adapter: PrismaAdapter(prisma),
+   	session: { strategy: "jwt" },
+   	...authConfig,
+   });
+   ```
+
+6. Update `src/app/api/auth/[...nextauth]/route.ts` to:
+
+   ```ts
+   export { GET, POST } from "@/auth";
+   ```
+
+7. Create a Postgres database with [NEON](https://neon.com/) and update the `DATABASE_URL` value in `.env`
+
+8. Update `prisma/schema.prisma` (see [here](https://authjs.dev/getting-started/adapters/prisma#schema))
+9. Run `npx prisma generate`
+10. Create `src/lib/prisma.ts` with the following code:
+
+    ```ts
+    import { PrismaClient } from "../generated/prisma";
+
+    const globalForPrisma = global as unknown as { prisma: PrismaClient };
+
+    export const prisma =
+    	globalForPrisma.prisma || new PrismaClient({ log: ["query"] });
+
+    if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+    ```
+
+11. Run `npx prisma db push`
+12. Run `npx prisma studio` to see the tables
+13. Run `npm i bcryptjs` and `npm i -D @types/bcryptjs`
+
+### Set up Session and Middleware
+
+1. Follow [Auth.js Session Management documentation](https://authjs.dev/getting-started/session-management/get-session) (both Next.js server and client)
+2. Follow [Next.js Middleware documentation](https://nextjs.org/docs/app/building-your-application/routing/middleware)
