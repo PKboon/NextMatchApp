@@ -122,6 +122,18 @@ In the `node_modules/@heroui/react`, it has `"use strict";`, but `node_modules/@
 12. Run `npx prisma studio` to see the tables
 13. Run `npm i bcryptjs` and `npm i -D @types/bcryptjs`
 
+#### Note
+
+- Every time you update the `schema.prisma`, Run:
+
+  ```bash
+  npx prisma generate
+  npx prisma db push
+  npx prisma studio
+  ```
+
+- See [Prisma's Seeding documentation](https://www.prisma.io/docs/orm/prisma-migrate/workflows/seeding) if want to seed data.
+
 ### Set up Session and Middleware
 
 1. Follow [Auth.js Session Management documentation](https://authjs.dev/getting-started/session-management/get-session) (both Next.js server and client)
