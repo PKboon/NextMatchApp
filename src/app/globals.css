@@ -7,4 +7,8 @@
 	.vertical-center {
 		height: calc(100vh - 4rem);
 	}
+
+	.bg-dark-gradient {
+		@apply bg-linear-to-t from-black/80 to-transparent;
+	}
 }
