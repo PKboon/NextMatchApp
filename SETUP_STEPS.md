@@ -1,6 +1,6 @@
-## Setup Steps
+# Setup Steps
 
-### 1. Create NextJS App
+## 1. Create NextJS App
 
 1. Run `npx create-next-app@latest`
 
@@ -15,13 +15,13 @@
    Would you like to customize the import alias (`@/*` by default)? No
    ```
 
-### 2. Install [eslint-plugin-simple-import-sort](https://github.com/lydell/eslint-plugin-simple-import-sort)
+## 2. Install [eslint-plugin-simple-import-sort](https://github.com/lydell/eslint-plugin-simple-import-sort)
 
 1. Run `npm install --save-dev eslint-plugin-simple-import-sort`
 2. Update `eslint.config.mjs` to [the code here](./eslint.config.mjs)
 3. Enable `eslint` in IDE
 
-### 3. Install [HeroUI](https://www.heroui.com/docs/guide/installation#manual-installation) and [React Icons](https://react-icons.github.io/react-icons/)
+## 3. Install [HeroUI](https://www.heroui.com/docs/guide/installation#manual-installation) and [React Icons](https://react-icons.github.io/react-icons/)
 
 I used [Manual Installation](https://www.heroui.com/docs/guide/installation#manual-installation) and [Tailwind v4 Migration Guide](https://www.heroui.com/docs/guide/tailwind-v4) because I didn't start the project with HeroUI and this project uses Tailwind 4.
 
@@ -51,7 +51,7 @@ I used [Manual Installation](https://www.heroui.com/docs/guide/installation#manu
    </html>
    ```
 
-#### Note
+### Note
 
 When using a component, remember to `import` from `@heroui/<component-folder>` instead of `@heroui/react` since NextJS is SSR.
 
@@ -64,11 +64,11 @@ import { Avatar } from "@heroui/avatar";
 
 In the `node_modules/@heroui/react`, it has `"use strict";`, but `node_modules/@heroui/<component-folder>` has `"use client"; "use strict";`.
 
-### 4. Install Form Packages
+## 4. Install Form Packages
 
 1. Run `react-hook-form zod @hookform/resolvers`
 
-### 5. Set up Authentication and Database
+## 5. Set up Authentication and Database
 
 1. Follow [Auth.js setup steps](https://authjs.dev/getting-started/installation?framework=Next.js)
 2. Follow [Prisma Adapter installation commands](https://authjs.dev/getting-started/adapters/prisma#installation)
@@ -122,7 +122,7 @@ In the `node_modules/@heroui/react`, it has `"use strict";`, but `node_modules/@
 12. Run `npx prisma studio` to see the tables
 13. Run `npm i bcryptjs` and `npm i -D @types/bcryptjs`
 
-#### Note
+### Note
 
 - Every time you update the `schema.prisma`, Run:
 
@@ -134,7 +134,26 @@ In the `node_modules/@heroui/react`, it has `"use strict";`, but `node_modules/@
 
 - See [Prisma's Seeding documentation](https://www.prisma.io/docs/orm/prisma-migrate/workflows/seeding) if want to seed data.
 
-### Set up Session and Middleware
+## 6. Set up Session and Middleware
 
 1. Follow [Auth.js Session Management documentation](https://authjs.dev/getting-started/session-management/get-session) (both Next.js server and client)
 2. Follow [Next.js Middleware documentation](https://nextjs.org/docs/app/building-your-application/routing/middleware)
+
+## 7. Set up Cloudinary
+
+1. Create an account
+2. Run `npm install cloudinary`
+3. Follow [Installing Next Cloudinary](https://next.cloudinary.dev/installation)
+4. Create a `src/lib/cloudinary.ts` with:
+
+   ```ts
+   import cloudinary from "cloudinary";
+
+   cloudinary.v2.config({
+   	cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+   	api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
+   	api_secret: process.env.CLOUDINARY_API_SECRET,
+   });
+
+   export { cloudinary };
+   ```
