@@ -2,27 +2,21 @@ import { Card } from "@heroui/card";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
 
+import { getAuthUserId } from "@/app/actions/authActions";
 import { getMemberByUserId } from "@/app/actions/memberActions";
 
 import MemberSidebar from "../MemberSidebar";
 
-const MemberLayout = async ({
-	children,
-	params,
-}: {
-	children: ReactNode;
-	params: Promise<{ userId: string }>;
-}) => {
-	const { userId } = await params;
+const MemberLayout = async ({ children }: { children: ReactNode }) => {
+	const userId = await getAuthUserId();
 
 	const member = await getMemberByUserId(userId);
 	if (!member) return notFound();
 
-	const basePath = `/members/${member.userId}`;
+	const basePath = `/members/edit`;
 	const navLinks = [
-		{ name: "Profile", href: `${basePath}` },
-		{ name: "Photos", href: `${basePath}/photos` },
-		{ name: "Chat", href: `${basePath}/chat` },
+		{ name: "Edit Profile", href: `${basePath}` },
+		{ name: "Edit Photos", href: `${basePath}/photos` },
 	];
 
 	return (
