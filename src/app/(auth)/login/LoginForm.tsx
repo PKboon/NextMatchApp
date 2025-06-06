@@ -10,6 +10,7 @@ import { GiPadlock } from "react-icons/gi";
 import { signInUser } from "@/app/actions/authActions";
 import { TextInput } from "@/components/ui/TextInput";
 import { LoginSchema, loginSchema } from "@/lib/schemas/loginSchema";
+import { handleFormServerErrors } from "@/lib/util";
 
 const LoginForm = () => {
 	const router = useRouter();
@@ -31,14 +32,7 @@ const LoginForm = () => {
 			router.push("/members");
 			router.refresh();
 		} else {
-			if (Array.isArray(result.error)) {
-				result.error.forEach((e) => {
-					const fieldName = e.path.join(".") as "email" | "password";
-					setError(fieldName, { message: e.message });
-				});
-			} else {
-				setError("root.serverError", { message: result.error });
-			}
+			handleFormServerErrors(result, setError);
 		}
 	};
 
