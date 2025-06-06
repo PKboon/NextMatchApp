@@ -1,6 +1,7 @@
 "use client";
 
-import { Button } from "@heroui/react";
+import { Button } from "@heroui/button";
+import { addToast } from "@heroui/toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -76,6 +77,14 @@ const MemberEditForm = ({ member }: Props) => {
 				isDisabled={!isValid || !isDirty}
 				isLoading={isSubmitting}
 				color="secondary"
+				onPress={() => {
+					if (JSON.stringify(errors) === "{}") {
+						addToast({
+							title: "Profile updated",
+							color: "success",
+						});
+					}
+				}}
 			>
 				Update profile
 			</Button>
