@@ -1,6 +1,6 @@
 "use server";
 
-import { Member } from "@/generated/prisma";
+import { Member, Photo } from "@/generated/prisma";
 import { prisma } from "@/lib/prisma";
 import {
 	MemberEditSchema,
@@ -37,5 +37,42 @@ export async function updateMemberProfile(
 	} catch (error) {
 		console.log(error);
 		return { status: "error", error: "Something went wrong" };
+	}
+}
+
+export async function addImage(url: string, publicId: string) {
+	try {
+		const userId = await getAuthUserId();
+
+		return prisma.member.update({
+			where: { userId },
+			data: {
+				photos: {
+					create: [{ url, publicId }],
+				},
+			},
+		});
+	} catch (error) {
+		console.log(error);
+		throw error;
+	}
+}
+
+export async function setMainImage(photo: Photo) {
+	try {
+		const userId = await getAuthUserId();
+
+		await prisma.user.update({
+			where: { id: userId },
+			data: { image: photo.url },
+		});
+
+		return prisma.member.update({
+			where: { userId },
+			data: { image: photo.url },
+		});
+	} catch (error) {
+		console.log(error);
+		throw error;
 	}
 }
