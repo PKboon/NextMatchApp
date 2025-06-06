@@ -8,21 +8,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { Member } from "@/generated/prisma";
-import { calculateAge } from "@/lib/util";
+import { calculateAge, transformImageUrl } from "@/lib/util";
 
 type Props = {
 	member: Member;
+	navLinks: { name: string; href: string }[];
 };
 
-const MemberSidebar = ({ member }: Props) => {
+const MemberSidebar = ({ member, navLinks }: Props) => {
 	const pathname = usePathname();
-
-	const basePath = `/members/${member.userId}`;
-	const navLinks = [
-		{ name: "Profile", href: `${basePath}` },
-		{ name: "Photos", href: `${basePath}/photos` },
-		{ name: "Chat", href: `${basePath}/chat` },
-	];
 
 	return (
 		<Card className="w-full mt-10 items-center h-[80vh]">
@@ -30,7 +24,7 @@ const MemberSidebar = ({ member }: Props) => {
 				<Image
 					height={200}
 					width={200}
-					src={member.image || "/image/user.png"}
+					src={transformImageUrl(member.image) || "/image/user.png"}
 					alt="User profile main page"
 					className="rounded-full mt-6 aspect-square object-cover"
 				/>
