@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { setMainImage } from "@/app/actions/userActions";
+import { deletePhoto, setMainImage } from "@/app/actions/userActions";
 import { Photo } from "@/generated/prisma";
 
 import MemberImage from "./MemberImage";
@@ -32,6 +32,14 @@ const MemberPhotos = ({ photos, editing, mainImageUrl }: Props) => {
 		setLoading({ type: "", isLoading: false, id: "" });
 	};
 
+	const onDelete = async (photo: Photo) => {
+		if (photo.url === mainImageUrl) return null;
+		setLoading({ type: "delete", isLoading: true, id: photo.id });
+		await deletePhoto(photo);
+		router.refresh();
+		setLoading({ type: "", isLoading: false, id: "" });
+	};
+
 	return (
 		<div className="grid grid-cols-5 gap-3 p-5">
 			{photos &&
@@ -54,8 +62,17 @@ const MemberPhotos = ({ photos, editing, mainImageUrl }: Props) => {
 										}
 									/>
 								</div>
-								<div className="absolute top-3 right-3 z-50">
-									<DeleteButton loading={false} />
+								<div
+									className="absolute top-3 right-3 z-50"
+									onClick={() => onDelete(photo)}
+								>
+									<DeleteButton
+										loading={
+											loading.isLoading &&
+											loading.type === "delete" &&
+											loading.id === photo.id
+										}
+									/>
 								</div>
 							</>
 						)}

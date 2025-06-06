@@ -1,6 +1,7 @@
 "use server";
 
 import { Member, Photo } from "@/generated/prisma";
+import { cloudinary } from "@/lib/cloudinary";
 import { prisma } from "@/lib/prisma";
 import {
 	MemberEditSchema,
@@ -78,6 +79,28 @@ export async function setMainImage(photo: Photo) {
 		return prisma.member.update({
 			where: { userId },
 			data: { image: photo.url },
+		});
+	} catch (error) {
+		console.log(error);
+		throw error;
+	}
+}
+
+export async function deletePhoto(photo: Photo) {
+	try {
+		const userId = await getAuthUserId();
+
+		if (photo.publicId) {
+			await cloudinary.v2.uploader.destroy(photo.publicId);
+		}
+
+		return prisma.member.update({
+			where: { userId },
+			data: {
+				photos: {
+					delete: { id: photo.id },
+				},
+			},
 		});
 	} catch (error) {
 		console.log(error);
