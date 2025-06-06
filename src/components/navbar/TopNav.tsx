@@ -3,6 +3,7 @@ import { Navbar, NavbarBrand, NavbarContent } from "@heroui/navbar";
 import Link from "next/link";
 import { GiMatchTip } from "react-icons/gi";
 
+import { getUserNavInfo } from "@/app/actions/userActions";
 import { auth } from "@/auth";
 
 import NavLink from "./NavLink";
@@ -16,6 +17,7 @@ const navLinks = [
 
 const TopNav = async () => {
 	const session = await auth();
+	const userInfo = session?.user && (await getUserNavInfo());
 
 	return (
 		<Navbar
@@ -43,8 +45,8 @@ const TopNav = async () => {
 				))}
 			</NavbarContent>
 			<NavbarContent justify="end">
-				{session?.user ? (
-					<UserMenu user={session.user} />
+				{userInfo ? (
+					<UserMenu userInfo={userInfo} />
 				) : (
 					<>
 						<Button

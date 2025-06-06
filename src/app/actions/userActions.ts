@@ -11,7 +11,8 @@ import { ActionResult } from "@/types";
 import { getAuthUserId } from "./authActions";
 
 export async function updateMemberProfile(
-	data: MemberEditSchema
+	data: MemberEditSchema,
+	nameUpdated: boolean
 ): Promise<ActionResult<Member>> {
 	try {
 		const userId = await getAuthUserId();
@@ -22,6 +23,13 @@ export async function updateMemberProfile(
 		}
 
 		const { name, description, city, country } = validated.data;
+
+		if (nameUpdated) {
+			await prisma.user.update({
+				where: { id: userId },
+				data: { name },
+			});
+		}
 
 		const member = await prisma.member.update({
 			where: { userId },
@@ -70,6 +78,20 @@ export async function setMainImage(photo: Photo) {
 		return prisma.member.update({
 			where: { userId },
 			data: { image: photo.url },
+		});
+	} catch (error) {
+		console.log(error);
+		throw error;
+	}
+}
+
+export async function getUserNavInfo() {
+	try {
+		const userId = await getAuthUserId();
+
+		return prisma.user.findUnique({
+			where: { id: userId },
+			select: { name: true, image: true },
 		});
 	} catch (error) {
 		console.log(error);
