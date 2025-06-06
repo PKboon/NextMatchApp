@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import LikeButton from "@/components/ui/LikeButton";
 import { Member } from "@/generated/prisma";
-import { calculateAge } from "@/lib/util";
+import { calculateAge, transformImageUrl } from "@/lib/util";
 
 type Props = {
 	member: Member;
@@ -27,7 +27,7 @@ const MemberCard = ({ member, likeIds }: Props) => {
 				isZoomed
 				alt={member.name}
 				width={300}
-				src={member.image || "/image/user.png"}
+				src={transformImageUrl(member.image) || "/image/user.png"}
 				className="aspect-square object-cover"
 			/>
 

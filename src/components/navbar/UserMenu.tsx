@@ -11,6 +11,7 @@ import {
 import Link from "next/link";
 
 import { signOutUser } from "@/app/actions/authActions";
+import { transformImageUrl } from "@/lib/util";
 
 type Props = {
 	userInfo: { name: string | null; image: string | null } | null;
@@ -27,7 +28,7 @@ const UserMenu = ({ userInfo }: Props) => {
 					color="secondary"
 					name={userInfo?.name || "user avatar"}
 					size="sm"
-					src={userInfo?.image || "/images/user.png"}
+					src={transformImageUrl(userInfo?.image) || "/images/user.png"}
 				/>
 			</DropdownTrigger>
 			<DropdownMenu variant="flat" aria-label="User actions menu">

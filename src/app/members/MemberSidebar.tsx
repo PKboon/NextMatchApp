@@ -8,7 +8,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { Member } from "@/generated/prisma";
-import { calculateAge } from "@/lib/util";
+import { calculateAge, transformImageUrl } from "@/lib/util";
 
 type Props = {
 	member: Member;
@@ -24,7 +24,7 @@ const MemberSidebar = ({ member, navLinks }: Props) => {
 				<Image
 					height={200}
 					width={200}
-					src={member.image || "/image/user.png"}
+					src={transformImageUrl(member.image) || "/image/user.png"}
 					alt="User profile main page"
 					className="rounded-full mt-6 aspect-square object-cover"
 				/>
