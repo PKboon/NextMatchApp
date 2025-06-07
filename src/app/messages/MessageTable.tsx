@@ -1,8 +1,9 @@
 "use client";
 
+import { Avatar } from "@heroui/avatar";
 import { Card } from "@heroui/card";
+import { Button } from "@heroui/react";
 import {
-	getKeyValue,
 	Table,
 	TableBody,
 	TableCell,
@@ -11,7 +12,8 @@ import {
 	TableRow,
 } from "@heroui/table";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Key } from "react";
+import { Key, useCallback } from "react";
+import { AiFillDelete } from "react-icons/ai";
 
 import { MessageDto } from "@/types";
 
@@ -37,6 +39,10 @@ const MessageTable = ({ messages }: Props) => {
 			key: "created",
 			label: isOutbox ? "Date sent" : "Date received",
 		},
+		{
+			key: "actions",
+			label: "Actions",
+		},
 	];
 
 	const handleRowSelect = (key: Key) => {
@@ -46,6 +52,44 @@ const MessageTable = ({ messages }: Props) => {
 			: `/members/${message?.senderId}`;
 		router.push(url + "/chat");
 	};
+
+	const renderCell = useCallback(
+		(item: MessageDto, columnKey: keyof MessageDto) => {
+			const cellValue = item[columnKey];
+
+			switch (columnKey) {
+				case "recipientName":
+				case "senderName":
+					return (
+						<div
+							className={`flex items-center gap-2 cursor-pointer ${
+								!item.dateRead && !isOutbox ? "font-semibold" : ""
+							}`}
+						>
+							<Avatar
+								alt="Image of member"
+								src={
+									(isOutbox ? item.recipientImage : item.senderImage) ||
+									"/image/user/png"
+								}
+							/>
+							<span>{cellValue}</span>
+						</div>
+					);
+				case "text":
+					return <div className="truncate">{cellValue}</div>;
+				case "created":
+					return cellValue;
+				default:
+					return (
+						<Button isIconOnly variant="light">
+							<AiFillDelete size={24} className="text-danger" />
+						</Button>
+					);
+			}
+		},
+		[isOutbox]
+	);
 
 	return (
 		<Card className="flex flex-col gap-3 h-[80vh] overflow-auto">
@@ -64,14 +108,12 @@ const MessageTable = ({ messages }: Props) => {
 					{(item) => (
 						<TableRow key={item.id} className="cursor-pointer">
 							{(columnKey) => (
-								<TableCell>
-									<div
-										className={`${
-											!item.dateRead && !isOutbox ? "font-semibold" : ""
-										}`}
-									>
-										{getKeyValue(item, columnKey)}
-									</div>
+								<TableCell
+									className={`${
+										!item.dateRead && !isOutbox ? "font-semibold" : ""
+									}`}
+								>
+									{renderCell(item, columnKey as keyof MessageDto)}
 								</TableCell>
 							)}
 						</TableRow>
