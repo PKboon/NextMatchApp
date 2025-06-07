@@ -39,7 +39,7 @@ export async function getMessageThread(recipientId: string) {
 	try {
 		const userId = await getAuthUserId();
 
-		const messages = prisma.message.findMany({
+		const messages = await prisma.message.findMany({
 			where: {
 				OR: [
 					{
@@ -77,7 +77,18 @@ export async function getMessageThread(recipientId: string) {
 			},
 		});
 
-		return (await messages).map((message) => mapMessageToMessageDto(message));
+		if (messages.length > 0) {
+			await prisma.message.updateMany({
+				where: {
+					senderId: recipientId,
+					recipientId: userId,
+					dateRead: null,
+				},
+				data: { dateRead: new Date() },
+			});
+		}
+
+		return messages.map((message) => mapMessageToMessageDto(message));
 	} catch (error) {
 		console.log(error);
 		throw error;
