@@ -12,10 +12,12 @@ import {
 	TableRow,
 } from "@heroui/table";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Key, useCallback } from "react";
+import { Key, useCallback, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 
 import { MessageDto } from "@/types";
+
+import { deleteMessage } from "../actions/messageActions";
 
 type Props = {
 	messages: MessageDto[];
@@ -25,6 +27,7 @@ const MessageTable = ({ messages }: Props) => {
 	const searchParams = useSearchParams();
 	const router = useRouter();
 	const isOutbox = searchParams.get("container") === "outbox";
+	const [isDeleting, setDeleting] = useState({ id: "", loading: false });
 
 	const columns = [
 		{
@@ -44,6 +47,22 @@ const MessageTable = ({ messages }: Props) => {
 			label: "Actions",
 		},
 	];
+
+	const handleDeleteMessage = useCallback(
+		async (message: MessageDto) => {
+			setDeleting({
+				id: message.id,
+				loading: true,
+			});
+			await deleteMessage(message.id, isOutbox);
+			router.refresh();
+			setDeleting({
+				id: "",
+				loading: false,
+			});
+		},
+		[isOutbox, router]
+	);
 
 	const handleRowSelect = (key: Key) => {
 		const message = messages.find((m) => m.id === key);
@@ -82,13 +101,18 @@ const MessageTable = ({ messages }: Props) => {
 					return cellValue;
 				default:
 					return (
-						<Button isIconOnly variant="light">
+						<Button
+							isIconOnly
+							variant="light"
+							onPress={() => handleDeleteMessage(item)}
+							isLoading={isDeleting.id === item.id && isDeleting.loading}
+						>
 							<AiFillDelete size={24} className="text-danger" />
 						</Button>
 					);
 			}
 		},
-		[isOutbox]
+		[handleDeleteMessage, isDeleting.id, isDeleting.loading, isOutbox]
 	);
 
 	return (
