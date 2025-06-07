@@ -56,7 +56,7 @@ const MemberSidebar = ({ member, navLinks }: Props) => {
 					))}
 				</nav>
 			</CardBody>
-			<CardFooter className="py-5">
+			<CardFooter>
 				<Button
 					as={Link}
 					href="/members"

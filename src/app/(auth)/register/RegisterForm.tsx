@@ -9,6 +9,7 @@ import { GiMatchTip } from "react-icons/gi";
 import { registerUser } from "@/app/actions/authActions";
 import { TextInput } from "@/components/ui/TextInput";
 import { RegisterSchema, registerSchema } from "@/lib/schemas/registerSchema";
+import { handleFormServerErrors } from "@/lib/util";
 
 const RegisterForm = () => {
 	const {
@@ -27,14 +28,7 @@ const RegisterForm = () => {
 		if (result.status === "success") {
 			console.log("yay");
 		} else {
-			if (Array.isArray(result.error)) {
-				result.error.forEach((e) => {
-					const fieldName = e.path.join(".") as "email" | "name" | "password";
-					setError(fieldName, { message: e.message });
-				});
-			} else {
-				setError("root.serverError", { message: result.error });
-			}
+			handleFormServerErrors(result, setError);
 		}
 	};
 
