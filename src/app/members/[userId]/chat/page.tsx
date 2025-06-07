@@ -1,15 +1,14 @@
-import { CardBody, CardHeader } from "@heroui/card";
-import { Divider } from "@heroui/divider";
+import CardInnerWrapper from "@/components/CardInnerWrapper";
+
+import ChatForm from "./ChatForm";
 
 const MemberChatPage = () => {
 	return (
-		<>
-			<CardHeader className="text-2xl font-semibold text-secondary">
-				Chat
-			</CardHeader>
-			<Divider />
-			<CardBody></CardBody>
-		</>
+		<CardInnerWrapper
+			header="Chat"
+			body={<div>yay</div>}
+			footer={<ChatForm />}
+		/>
 	);
 };
 export default MemberChatPage;
