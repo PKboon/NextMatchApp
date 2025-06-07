@@ -59,7 +59,7 @@ const MessageBox = ({ message, currentUserId }: Props) => {
 	const renderMessageContent = () => (
 		<div className={messageContentClasses}>
 			{renderMessageHeader()}
-			<p className="text-sm py-3 text-neutral-900">{message.text}</p>
+			<p className="text-sm py-3 text-neutral-900 break-all">{message.text}</p>
 		</div>
 	);
 

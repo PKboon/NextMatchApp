@@ -15,6 +15,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Key, useCallback, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 
+import { truncateString } from "@/lib/util";
 import { MessageDto } from "@/types";
 
 import { deleteMessage } from "../actions/messageActions";
@@ -96,7 +97,7 @@ const MessageTable = ({ messages }: Props) => {
 						</div>
 					);
 				case "text":
-					return <div className="truncate">{cellValue}</div>;
+					return <div>{truncateString(cellValue, 75)}</div>;
 				case "created":
 					return cellValue;
 				default:
@@ -125,7 +126,12 @@ const MessageTable = ({ messages }: Props) => {
 			>
 				<TableHeader columns={columns}>
 					{(column) => (
-						<TableColumn key={column.key}>{column.label}</TableColumn>
+						<TableColumn
+							key={column.key}
+							width={column.key === "text" ? "50%" : undefined}
+						>
+							{column.label}
+						</TableColumn>
 					)}
 				</TableHeader>
 				<TableBody items={messages}>
