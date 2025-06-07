@@ -1,10 +1,9 @@
+/* eslint-disable no-var */
 import PusherServer from "pusher";
 import PusherClient from "pusher-js";
 
 declare global {
-	// eslint-disable-next-line no-var
 	var pusherServerInstance: PusherServer | undefined;
-	// eslint-disable-next-line no-var
 	var pusherClientInstance: PusherClient | undefined;
 }
 
@@ -13,7 +12,7 @@ if (!global.pusherServerInstance) {
 		appId: process.env.PUSHER_APP_ID!,
 		key: process.env.NEXT_PUBLIC_PUSHER_APP_KEY!,
 		secret: process.env.PUSHER_SECRET!,
-		cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
+		cluster: "us2",
 		useTLS: true,
 	});
 }
@@ -26,7 +25,7 @@ if (!global.pusherClientInstance) {
 				endpoint: "/api/pusher-auth",
 				transport: "ajax",
 			},
-			cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
+			cluster: "us2",
 		}
 	);
 }

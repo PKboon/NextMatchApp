@@ -4,10 +4,18 @@ import { HeroUIProvider } from "@heroui/react";
 import { ToastProvider } from "@heroui/toast";
 import { ReactNode } from "react";
 
-import { usePresenceChannel } from "@/hooks/usePresonceChannel";
+import { useNotificationChannel } from "@/hooks/useNotificationChannel";
+import { usePresenceChannel } from "@/hooks/usePresenceChannel";
 
-const Providers = ({ children }: { children: ReactNode }) => {
+const Providers = ({
+	children,
+	userId,
+}: {
+	children: ReactNode;
+	userId: string | null;
+}) => {
 	usePresenceChannel();
+	useNotificationChannel(userId);
 
 	return (
 		<HeroUIProvider>

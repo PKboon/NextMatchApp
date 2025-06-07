@@ -16,7 +16,7 @@ export default auth((req) => {
 	if (isAuthRoute) {
 		if (isLoggedIn) {
 			return NextResponse.redirect(
-				new URL("/members"),
+				new URL("/members", nextUrl),
 				nextUrl as number | ResponseInit | undefined
 			);
 		}
@@ -25,7 +25,7 @@ export default auth((req) => {
 
 	if (!isPublic && !isLoggedIn) {
 		return NextResponse.redirect(
-			new URL("/login"),
+			new URL("/login", nextUrl),
 			nextUrl as number | ResponseInit | undefined
 		);
 	}
