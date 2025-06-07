@@ -11,24 +11,23 @@ const MemberPhotosPage = async ({
 	const { userId } = await params;
 	const photos = await getMemberPhotosByUserId(userId);
 
-	const renderedBody = () => {
-		return (
-			<div className="grid grid-cols-5 gap-3">
-				{photos &&
-					photos.map((photo) => (
-						<div key={photo.id}>
-							<Image
-								width={300}
-								src={photo.url}
-								alt="Image of member"
-								className="object-cover aspect-square"
-							/>
-						</div>
-					))}
-			</div>
-		);
-	};
+	const body = (
+		<div className="grid grid-cols-5 gap-3">
+			{photos &&
+				photos.map((photo) => (
+					<div key={photo.id}>
+						<Image
+							width={300}
+							src={photo.url}
+							alt="Image of member"
+							className="object-cover aspect-square"
+						/>
+					</div>
+				))}
+		</div>
+	);
 
-	return <CardInnerWrapper header="Photos" body={renderedBody()} />;
+	return <CardInnerWrapper header="Photos" body={body} />;
 };
+
 export default MemberPhotosPage;

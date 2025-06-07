@@ -7,7 +7,7 @@ export function calculateAge(dob: Date) {
 }
 
 export function formatShortDateTime(date: Date) {
-	return format(date, "dd MM yy h:mm:a");
+	return format(date, "dd MMM yyyy h:mm a");
 }
 
 export function handleFormServerErrors<TFieldValues extends FieldValues>(

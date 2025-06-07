@@ -20,9 +20,12 @@ const ChatForm = () => {
 		reset,
 		handleSubmit,
 		setError,
+		setFocus,
 		formState: { errors, isValid, isSubmitting },
 	} = useForm<MessageSchema>({
+		defaultValues: { text: "" },
 		resolver: zodResolver(messageSchema),
+		mode: "onSubmit",
 	});
 
 	const onSubmit = async (data: MessageSchema) => {
@@ -31,8 +34,9 @@ const ChatForm = () => {
 		if (result.status !== "success") {
 			handleFormServerErrors(result, setError);
 		} else {
-			reset();
+			reset({ text: "" });
 			router.refresh();
+			setTimeout(() => setFocus("text"), 50);
 		}
 	};
 
@@ -56,7 +60,7 @@ const ChatForm = () => {
 					<HiPaperAirplane size={18} />
 				</Button>
 			</div>
-			<div className="flex flex-col">
+			<div className="flex">
 				{errors.root?.serverError && (
 					<p className="text-danger text-sm">
 						{errors.root.serverError.message}
@@ -66,4 +70,5 @@ const ChatForm = () => {
 		</form>
 	);
 };
+
 export default ChatForm;
