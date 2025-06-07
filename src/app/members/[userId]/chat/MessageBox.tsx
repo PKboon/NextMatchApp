@@ -1,9 +1,9 @@
 "use client";
 
-import { Avatar } from "@heroui/avatar";
 import { clsx } from "clsx";
 import { useEffect, useRef } from "react";
 
+import PresenseAvatar from "@/components/PresenseAvatar";
 import { timeAgo, transformImageUrl } from "@/lib/util";
 import { MessageDto } from "@/types";
 
@@ -23,11 +23,12 @@ const MessageBox = ({ message, currentUserId }: Props) => {
 	}, [messageEndRef]);
 
 	const renderAvatar = () => (
-		<Avatar
-			name={message.senderName}
-			className="self-end"
-			src={transformImageUrl(message.senderImage) || "/image/user.png"}
-		/>
+		<div className="self-end">
+			<PresenseAvatar
+				userId={message.senderId}
+				src={transformImageUrl(message.senderImage) || "/image/user.png"}
+			/>
+		</div>
 	);
 
 	const renderMessageHeader = () => (

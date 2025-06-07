@@ -4,6 +4,7 @@ import { Card, CardFooter } from "@heroui/card";
 import { Image } from "@heroui/image";
 import Link from "next/link";
 
+import PresenceDot from "@/components/PresenceDot";
 import LikeButton from "@/components/ui/LikeButton";
 import { Member } from "@/generated/prisma";
 import { calculateAge, transformImageUrl } from "@/lib/util";
@@ -34,6 +35,9 @@ const MemberCard = ({ member, likeIds }: Props) => {
 			<div onClick={preventLinkAction}>
 				<div className="absolute top-3 right-3 z-50">
 					<LikeButton targetId={member.userId} hasLiked={hasLiked} />
+				</div>
+				<div className="absolute top-2 left-3 z-50">
+					<PresenceDot member={member} />
 				</div>
 			</div>
 

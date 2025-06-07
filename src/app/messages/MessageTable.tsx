@@ -1,6 +1,5 @@
 "use client";
 
-import { Avatar } from "@heroui/avatar";
 import { Card } from "@heroui/card";
 import { Button } from "@heroui/react";
 import {
@@ -15,6 +14,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Key, useCallback, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 
+import PresenseAvatar from "@/components/PresenseAvatar";
 import { truncateString } from "@/lib/util";
 import { MessageDto } from "@/types";
 
@@ -86,11 +86,10 @@ const MessageTable = ({ messages }: Props) => {
 								!item.dateRead && !isOutbox ? "font-semibold" : ""
 							}`}
 						>
-							<Avatar
-								alt="Image of member"
+							<PresenseAvatar
+								userId={isOutbox ? item.recipientId : item.senderId}
 								src={
-									(isOutbox ? item.recipientImage : item.senderImage) ||
-									"/image/user/png"
+									(isOutbox ? item.recipientImage : item.senderImage) || null
 								}
 							/>
 							<span>{cellValue}</span>
