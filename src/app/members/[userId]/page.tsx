@@ -1,8 +1,7 @@
-import { CardBody, CardHeader } from "@heroui/card";
-import { Divider } from "@heroui/divider";
 import { notFound } from "next/navigation";
 
 import { getMemberByUserId } from "@/app/actions/memberActions";
+import CardInnerWrapper from "@/components/CardInnerWrapper";
 
 const MemberDetailPage = async ({
 	params,
@@ -15,13 +14,7 @@ const MemberDetailPage = async ({
 	if (!member) return notFound();
 
 	return (
-		<>
-			<CardHeader className="text-2xl font-semibold text-secondary">
-				Profile
-			</CardHeader>
-			<Divider />
-			<CardBody></CardBody>
-		</>
+		<CardInnerWrapper header="Profile" body={<div>{member.description}</div>} />
 	);
 };
 export default MemberDetailPage;
