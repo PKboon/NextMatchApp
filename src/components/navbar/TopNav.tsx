@@ -6,7 +6,7 @@ import { GiMatchTip } from "react-icons/gi";
 import { getUserNavInfo } from "@/app/actions/userActions";
 import { auth } from "@/auth";
 
-import Filters from "./Filters";
+import FiltersWrapper from "./FiltersWrapper";
 import NavLink from "./NavLink";
 import UserMenu from "./UserMenu";
 
@@ -71,7 +71,7 @@ const TopNav = async () => {
 					)}
 				</NavbarContent>
 			</Navbar>
-			<Filters />
+			<FiltersWrapper />
 		</>
 	);
 };

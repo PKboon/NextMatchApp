@@ -3,57 +3,69 @@
 import { Button } from "@heroui/button";
 import { Select, SelectItem } from "@heroui/select";
 import { Slider } from "@heroui/slider";
-import { usePathname } from "next/navigation";
-import { FaFemale, FaMale } from "react-icons/fa";
+import { Spinner } from "@heroui/spinner";
+
+import { useFilters } from "@/hooks/useFilter";
 
 const Filters = () => {
-	const pathname = usePathname();
-
-	const orderByList = [
-		{ label: "Last active", value: "updated" },
-		{ label: "Newest members", value: "created" },
-	];
-
-	const genders = [
-		{ value: "male", icon: FaMale },
-		{ value: "female", icon: FaFemale },
-	];
-
-	if (pathname !== "/members") return null;
+	const {
+		isPending,
+		orderByList,
+		genderList,
+		filters,
+		selectAge,
+		selectOrder,
+		selectGender,
+	} = useFilters();
 
 	return (
 		<div className="shadow-md py-2">
 			<div className="flex flex-row justify-around items-center">
-				<div className="text-secondary font-semibold text-xl">Results: 10</div>
+				<div className="flex gap-2 items-center">
+					<div className="text-secondary font-semibold text-xl">
+						Results: 10
+					</div>
+					{isPending && <Spinner size="sm" color="secondary" />}
+				</div>
 				<div className="flex gap-2 items-center">
 					<div>Gender:</div>
-					{genders.map(({ value, icon: Icon }) => (
-						<Button key={value} size="sm" isIconOnly color="secondary">
+					{genderList.map(({ value, icon: Icon }) => (
+						<Button
+							key={value}
+							size="sm"
+							isIconOnly
+							color={filters.gender.includes(value) ? "secondary" : "default"}
+							onPress={() => selectGender(value)}
+						>
 							<Icon size={24} />
 						</Button>
 					))}
 				</div>
 				<div className="flex flex-row items-center gap-2 w-1/4">
 					<Slider
+						aria-label="Slider for age selection"
 						label="Age range"
 						color="secondary"
 						size="sm"
 						minValue={18}
 						maxValue={100}
-						defaultValue={[18, 100]}
+						defaultValue={filters.ageRange}
+						onChangeEnd={(value) => selectAge(value as number[])}
 					/>
 				</div>
 				<div className="w-1/4">
 					<Select
 						size="sm"
 						fullWidth
-						placeholder="Order by"
+						label="Order by"
 						variant="bordered"
 						color="secondary"
 						aria-label="Order by selector"
+						selectedKeys={new Set([filters.orderBy])}
+						onSelectionChange={selectOrder}
 					>
 						{orderByList.map((item) => (
-							<SelectItem key={item.value}>{item.label}</SelectItem>
+							<SelectItem key={item.key}>{item.label}</SelectItem>
 						))}
 					</Select>
 				</div>
