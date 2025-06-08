@@ -4,25 +4,22 @@ import { addToast } from "@heroui/toast";
 import Link from "next/link";
 
 import { transformImageUrl } from "@/lib/util";
-import { MessageDto } from "@/types";
 
-export const addNewMessageToast = (message: MessageDto) => {
+export const addAvatarToast = (
+	title: string,
+	href: string,
+	image?: string | null
+) => {
 	addToast({
-		title: `${message.senderName} sent you a message`,
+		title,
 		endContent: (
-			<Button
-				as={Link}
-				href={`/members/${message.senderId}/chat`}
-				size="sm"
-				color="primary"
-				variant="flat"
-			>
+			<Button as={Link} href={href} size="sm" color="secondary" variant="flat">
 				Click to view
 			</Button>
 		),
 		icon: (
 			<Image
-				src={transformImageUrl(message.senderImage) || "/images/user.png"}
+				src={transformImageUrl(image) || "/images/user.png"}
 				width={50}
 				alt="Sender image"
 			/>
