@@ -14,11 +14,12 @@ export const useMessages = (initialMessages: MessageDto[]) => {
 	const isOutbox = searchParams.get("container") === "outbox";
 	const [isDeleting, setDeleting] = useState({ id: "", loading: false });
 
-	const { set, remove, messages } = useMessageStore(
+	const { set, remove, messages, updateUnreadCount } = useMessageStore(
 		useShallow((state) => ({
 			set: state.set,
 			remove: state.remove,
 			messages: state.messages,
+			updateUnreadCount: state.updateUnreadCount,
 		}))
 	);
 
@@ -56,13 +57,16 @@ export const useMessages = (initialMessages: MessageDto[]) => {
 				loading: true,
 			});
 			await deleteMessage(message.id, isOutbox);
-			router.refresh();
+			remove(message.id);
+
+			if (!message.dateRead && !isOutbox) updateUnreadCount(-1);
+
 			setDeleting({
 				id: "",
 				loading: false,
 			});
 		},
-		[isOutbox, router]
+		[isOutbox, remove, updateUnreadCount]
 	);
 
 	const handleRowSelect = (key: Key) => {

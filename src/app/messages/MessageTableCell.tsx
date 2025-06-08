@@ -29,7 +29,7 @@ const MessageTableCell = ({
 			return (
 				<div
 					className={`flex items-center gap-2 cursor-pointer ${
-						!item.dateRead && !isOutbox ? "font-semibold" : ""
+						!item.dateRead && !isOutbox ? "font-bold" : ""
 					}`}
 				>
 					<PresenseAvatar
