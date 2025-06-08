@@ -13,24 +13,23 @@ const MembersPage = async ({
 }) => {
 	const userFilters = await searchParams;
 	const { items: members, totalCount } = await getMembers(userFilters);
+	const hasMembers = members && members.length > 0 && totalCount > 0;
 
 	const likeIds = await fetchCurrentUserLikeIds();
 
 	return (
 		<>
-			{!members || members.length === 0 ? (
-				<EmptyState />
+			{hasMembers ? (
+				<div className="mt-10 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-8">
+					{members &&
+						members.map((member) => (
+							<MemberCard key={member.id} member={member} likeIds={likeIds} />
+						))}
+				</div>
 			) : (
-				<>
-					<div className="mt-10 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-8">
-						{members &&
-							members.map((member) => (
-								<MemberCard key={member.id} member={member} likeIds={likeIds} />
-							))}
-					</div>
-					<PaginationComponent totalCount={totalCount} />
-				</>
+				<EmptyState />
 			)}
+			<PaginationComponent hasMembers={hasMembers} totalCount={totalCount} />
 		</>
 	);
 };

@@ -18,7 +18,7 @@ const PresenceAvatar = ({ userId, src }: Props) => {
 	return (
 		<div>
 			<Badge content="" color="success" shape="circle" isInvisible={!isOnline}>
-				<Avatar src={src || "/image/user.png"} alt="User avatar" />
+				<Avatar src={src || "/images/user.png"} alt="User avatar" />
 			</Badge>
 		</div>
 	);

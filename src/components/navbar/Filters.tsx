@@ -9,6 +9,7 @@ import { useFilters } from "@/hooks/useFilter";
 
 const Filters = () => {
 	const {
+		totalCount,
 		isPending,
 		orderByList,
 		genderList,
@@ -21,11 +22,13 @@ const Filters = () => {
 	return (
 		<div className="shadow-md py-2">
 			<div className="flex flex-row justify-around items-center">
-				<div className="flex gap-2 items-center">
-					<div className="text-secondary font-semibold text-xl">
-						Results: 10
-					</div>
-					{isPending && <Spinner size="sm" color="secondary" />}
+				<div className="flex gap-1 items-center text-secondary font-semibold text-xl">
+					Results:
+					{isPending ? (
+						<Spinner size="sm" color="secondary" />
+					) : (
+						<span>{totalCount}</span>
+					)}
 				</div>
 				<div className="flex gap-2 items-center">
 					<div>Gender:</div>

@@ -8,7 +8,13 @@ import { useShallow } from "zustand/shallow";
 
 import usePaginationStore from "@/hooks/usePagination";
 
-const PaginationComponent = ({ totalCount }: { totalCount: number }) => {
+const PaginationComponent = ({
+	hasMembers,
+	totalCount,
+}: {
+	hasMembers: boolean;
+	totalCount: number;
+}) => {
 	const { pagination, setPage, setPageSize, setPagination } =
 		usePaginationStore(
 			useShallow((state) => ({
@@ -28,6 +34,8 @@ const PaginationComponent = ({ totalCount }: { totalCount: number }) => {
 	const start = (pageNumber - 1) * pageSize + 1;
 	const end = Math.min(pageNumber * pageSize, totalCount);
 	const resultText = `Showing ${start}-${end} of ${totalCount} results`;
+
+	if (!hasMembers) return null;
 
 	return (
 		<div className="border-t-2 w-full mt-5">

@@ -26,7 +26,7 @@ const MessageBox = ({ message, currentUserId }: Props) => {
 		<div className="self-end">
 			<PresenceAvatar
 				userId={message.senderId}
-				src={transformImageUrl(message.senderImage) || "/image/user.png"}
+				src={transformImageUrl(message.senderImage) || "/images/user.png"}
 			/>
 		</div>
 	);
