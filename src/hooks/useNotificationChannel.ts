@@ -1,8 +1,8 @@
-import { addToast } from "@heroui/toast";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Channel } from "pusher-js";
 import { useCallback, useEffect, useRef } from "react";
 
+import { addNewMessageToast } from "@/components/NewMessageToast";
 import { pusherClient } from "@/lib/pusher";
 import { MessageDto } from "@/types";
 
@@ -23,11 +23,7 @@ export const useNotificationChannel = (userId: string | null) => {
 			) {
 				add(message);
 			} else if (pathname !== `/members/${message.senderId}/chat`) {
-				addToast({
-					title: `New message from ${message.senderName}`,
-					color: "primary",
-					timeout: 3000,
-				});
+				addNewMessageToast(message);
 			}
 		},
 		[add, pathname, searchParams]

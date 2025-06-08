@@ -11,7 +11,10 @@ export function formatShortDateTime(date: Date) {
 }
 
 export function timeAgo(date: string) {
-	return formatDistance(new Date(date), new Date()).substring(5) + " ago";
+	let deltaString = formatDistance(new Date(date), new Date());
+	const foundAbout = deltaString.indexOf("about") > -1;
+	if (foundAbout) deltaString = deltaString.substring(5);
+	return deltaString + " ago";
 }
 
 export function handleFormServerErrors<TFieldValues extends FieldValues>(
