@@ -2,43 +2,56 @@
 
 import { addYears } from "date-fns";
 
-import { auth } from "@/auth";
+import { Member } from "@/generated/prisma";
 import { prisma } from "@/lib/prisma";
-import { UserFilters } from "@/types";
+import { GetMemberParams, PaginatedResponse } from "@/types";
 
 import { getAuthUserId } from "./authActions";
 
-export async function getMembers(searchParams: UserFilters) {
-	// Get the currently logged-in user id to filter the user out from the returned member list
-	const session = await auth();
-	if (!session?.user) return null;
+export async function getMembers({
+	ageRange = "18,100",
+	gender = "male,female",
+	orderBy = "updated",
+	pageNumber = "1",
+	pageSize = "12",
+}: GetMemberParams): Promise<PaginatedResponse<Member>> {
+	const userId = await getAuthUserId();
 
-	const ageRange = searchParams?.ageRange?.toString()?.split(",") || [18, 100];
+	const [minAge, maxAge] = ageRange.split(",");
 	const currentDate = new Date();
-	const minDob = addYears(currentDate, -ageRange[1] - 1);
-	const maxDob = addYears(currentDate, -ageRange[0]);
+	const minDob = addYears(currentDate, -maxAge - 1);
+	const maxDob = addYears(currentDate, -minAge);
 
-	const orderBySelector = searchParams?.orderBy || "updated";
+	const selectedGender = gender.split(",");
 
-	const selectedGender = searchParams?.gender?.toString()?.split(",") || [
-		"male",
-		"female",
-	];
+	const page = parseInt(pageNumber);
+	const limit = parseInt(pageSize);
+	const skip = (page - 1) * limit;
 
 	try {
-		return prisma.member.findMany({
-			where: {
-				AND: [
-					{ dateOfBirth: { gte: minDob } },
-					{ dateOfBirth: { lte: maxDob } },
-					{ gender: { in: selectedGender } },
-				],
-				NOT: {
-					userId: session.user.id,
-				},
+		const where = {
+			AND: [
+				{ dateOfBirth: { gte: minDob } },
+				{ dateOfBirth: { lte: maxDob } },
+				{ gender: { in: selectedGender } },
+			],
+			NOT: {
+				userId,
 			},
-			orderBy: { [orderBySelector]: "desc" },
+		};
+
+		const count = await prisma.member.count({ where });
+		const members = await prisma.member.findMany({
+			where,
+			orderBy: { [orderBy]: "desc" },
+			skip,
+			take: limit,
 		});
+
+		return {
+			totalCount: count,
+			items: members,
+		};
 	} catch (error) {
 		console.log(error);
 		throw error;

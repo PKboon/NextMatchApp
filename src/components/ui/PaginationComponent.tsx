@@ -3,19 +3,41 @@
 import { Button } from "@heroui/button";
 import { Pagination } from "@heroui/pagination";
 import clsx from "clsx";
-import { useState } from "react";
+import { useEffect } from "react";
+import { useShallow } from "zustand/shallow";
 
-const PaginationComponent = () => {
-	const [active, setActive] = useState(3);
+import usePaginationStore from "@/hooks/usePagination";
+
+const PaginationComponent = ({ totalCount }: { totalCount: number }) => {
+	const { pagination, setPage, setPageSize, setPagination } =
+		usePaginationStore(
+			useShallow((state) => ({
+				pagination: state.pagination,
+				setPage: state.setPage,
+				setPageSize: state.setPageSize,
+				setPagination: state.setPagination,
+			}))
+		);
+
+	const { pageNumber, pageSize, totalPages } = pagination;
+
+	useEffect(() => {
+		setPagination(totalCount);
+	}, [setPagination, totalCount]);
+
+	const start = (pageNumber - 1) * pageSize + 1;
+	const end = Math.min(pageNumber * pageSize, totalCount);
+	const resultText = `Showing ${start}-${end} of ${totalCount} results`;
 
 	return (
 		<div className="border-t-2 w-full mt-5">
 			<div className="flex justify-between items-center py-5">
-				<div>Showing 1-10 of 23 results</div>
+				<div>{resultText}</div>
 				<Pagination
-					total={20}
+					total={totalPages}
+					page={pageNumber}
+					onChange={setPage}
 					color="secondary"
-					initialPage={1}
 					variant="bordered"
 					className="cursor-pointer"
 				/>
@@ -25,16 +47,16 @@ const PaginationComponent = () => {
 						{[3, 6, 12].map((size) => (
 							<Button
 								key={size}
-								color={active === size ? "secondary" : "default"}
-								variant={active === size ? "solid" : "bordered"}
+								color={pageSize === size ? "secondary" : "default"}
+								variant={pageSize === size ? "solid" : "bordered"}
 								className={clsx(
 									"min-w-9 max-w-9 h-9 mx-0.5 border-2 rounded-xl",
 									{
-										"hover:bg-neutral-100": active !== size,
-										"border-2 border-purple-700": active === size,
+										"hover:bg-neutral-100": pageSize !== size,
+										"border-2 border-purple-700": pageSize === size,
 									}
 								)}
-								onPress={() => setActive(size)}
+								onPress={() => setPageSize(size)}
 							>
 								{size}
 							</Button>

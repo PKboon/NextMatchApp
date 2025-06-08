@@ -2,8 +2,10 @@ import { SharedSelection } from "@heroui/react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useTransition } from "react";
 import { FaFemale, FaMale } from "react-icons/fa";
+import { useShallow } from "zustand/shallow";
 
 import useFilterStore from "./useFilterStore";
+import usePaginationStore from "./usePagination";
 
 export const useFilters = () => {
 	const pathname = usePathname();
@@ -12,6 +14,14 @@ export const useFilters = () => {
 
 	const { filters, setFilters } = useFilterStore();
 	const { ageRange, orderBy, gender } = filters;
+
+	const { pageNumber, pageSize, setPage } = usePaginationStore(
+		useShallow((state) => ({
+			pageNumber: state.pagination.pageNumber,
+			pageSize: state.pagination.pageSize,
+			setPage: state.setPage,
+		}))
+	);
 
 	const orderByList = [
 		{ label: "Last active", key: "updated" },
@@ -24,6 +34,12 @@ export const useFilters = () => {
 	];
 
 	useEffect(() => {
+		if (gender || ageRange || orderBy) {
+			setPage(1);
+		}
+	}, [ageRange, gender, orderBy, setPage]);
+
+	useEffect(() => {
 		startTransition(() => {
 			const searchParams = new URLSearchParams();
 
@@ -31,9 +47,12 @@ export const useFilters = () => {
 			if (orderBy) searchParams.set("orderBy", orderBy);
 			if (gender) searchParams.set("gender", gender.join(","));
 
+			if (pageSize) searchParams.set("pageSize", pageSize.toString());
+			if (pageNumber) searchParams.set("pageNumber", pageNumber.toString());
+
 			router.replace(`${pathname}?${searchParams}`);
 		});
-	}, [ageRange, gender, orderBy, pathname, router]);
+	}, [ageRange, gender, orderBy, pageNumber, pageSize, pathname, router]);
 
 	const handleAgeSelect = (value: number[]) => {
 		setFilters("ageRange", value);
