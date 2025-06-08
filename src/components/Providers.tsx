@@ -2,9 +2,40 @@
 
 import { HeroUIProvider } from "@heroui/react";
 import { ToastProvider } from "@heroui/toast";
-import { ReactNode } from "react";
+import { ReactNode, useCallback, useEffect } from "react";
 
-const Providers = ({ children }: { children: ReactNode }) => {
+import { getUnreadMessageCount } from "@/app/actions/messageActions";
+import useMessageStore from "@/hooks/useMessageStore";
+import { useNotificationChannel } from "@/hooks/useNotificationChannel";
+import { usePresenceChannel } from "@/hooks/usePresenceChannel";
+
+const Providers = ({
+	children,
+	userId,
+}: {
+	children: ReactNode;
+	userId: string | null;
+}) => {
+	const updateUnreadCount = useMessageStore((state) => state.updateUnreadCount);
+
+	const setUnreadCount = useCallback(
+		(amount: number) => {
+			updateUnreadCount(amount);
+		},
+		[updateUnreadCount]
+	);
+
+	useEffect(() => {
+		if (!userId) return;
+
+		getUnreadMessageCount().then((count) => {
+			setUnreadCount(count);
+		});
+	}, [setUnreadCount, userId]);
+
+	usePresenceChannel(userId);
+	useNotificationChannel(userId);
+
 	return (
 		<HeroUIProvider>
 			{children}

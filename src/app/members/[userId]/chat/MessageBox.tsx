@@ -1,10 +1,10 @@
 "use client";
 
-import { Avatar } from "@heroui/avatar";
 import { clsx } from "clsx";
 import { useEffect, useRef } from "react";
 
-import { transformImageUrl } from "@/lib/util";
+import PresenceAvatar from "@/components/PresenceAvatar";
+import { timeAgo, transformImageUrl } from "@/lib/util";
 import { MessageDto } from "@/types";
 
 type Props = {
@@ -23,11 +23,12 @@ const MessageBox = ({ message, currentUserId }: Props) => {
 	}, [messageEndRef]);
 
 	const renderAvatar = () => (
-		<Avatar
-			name={message.senderName}
-			className="self-end"
-			src={transformImageUrl(message.senderImage) || "/image/user.png"}
-		/>
+		<div className="self-end">
+			<PresenceAvatar
+				userId={message.senderId}
+				src={transformImageUrl(message.senderImage) || "/image/user.png"}
+			/>
+		</div>
 	);
 
 	const renderMessageHeader = () => (
@@ -39,7 +40,7 @@ const MessageBox = ({ message, currentUserId }: Props) => {
 			<span className="text-xs text-black italic">
 				{message.dateRead &&
 					message.recipientId !== currentUserId &&
-					"Read a min ago"}
+					`Read ${timeAgo(message.dateRead)}`}
 			</span>
 
 			<div className="flex">

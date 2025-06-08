@@ -157,3 +157,22 @@ In the `node_modules/@heroui/react`, it has `"use strict";`, but `node_modules/@
 
    export { cloudinary };
    ```
+
+## 8. Set up Pusher
+
+1. Run `npm i pusher` for server side
+2. Run `npm i pusher-js` for client side
+3. Add the following to `.env`:
+   ```
+   NEXT_PUBLIC_PUSHER_CLUSTER=
+   NEXT_PUBLIC_PUSHER_APP_KEY=
+   PUSHER_APP_ID=
+   PUSHER_SECRET=
+   ```
+4. Create [`src/lib/pusher`](./src/lib/pusher.ts)
+
+## 9. Set up Zustand
+
+1. Run `npm install zustand`
+2. Add all hooks to `Provider.tsx`
+   - They don't have to be in the `Providers.tsx`, but they must be in a client component and import that component to the main layout
