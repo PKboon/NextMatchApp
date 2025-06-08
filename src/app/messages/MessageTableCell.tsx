@@ -2,7 +2,7 @@ import { Button } from "@heroui/button";
 import { Key } from "react";
 import { AiFillDelete } from "react-icons/ai";
 
-import PresenseAvatar from "@/components/PresenseAvatar";
+import PresenceAvatar from "@/components/PresenceAvatar";
 import { truncateString } from "@/lib/util";
 import { MessageDto } from "@/types";
 
@@ -32,7 +32,7 @@ const MessageTableCell = ({
 						!item.dateRead && !isOutbox ? "font-bold" : ""
 					}`}
 				>
-					<PresenseAvatar
+					<PresenceAvatar
 						userId={isOutbox ? item.recipientId : item.senderId}
 						src={(isOutbox ? item.recipientImage : item.senderImage) || null}
 					/>

@@ -1,3 +1,5 @@
+"use client";
+
 import { Badge } from "@heroui/badge";
 import { Avatar } from "@heroui/react";
 
@@ -8,7 +10,7 @@ type Props = {
 	src: string | null;
 };
 
-const PresenseAvatar = ({ userId, src }: Props) => {
+const PresenceAvatar = ({ userId, src }: Props) => {
 	const members = usePresenceStore((state) => state.members);
 
 	const isOnline = userId && members.indexOf(userId) !== -1;
@@ -21,4 +23,4 @@ const PresenseAvatar = ({ userId, src }: Props) => {
 		</div>
 	);
 };
-export default PresenseAvatar;
+export default PresenceAvatar;

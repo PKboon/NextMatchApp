@@ -1,3 +1,5 @@
+"use client";
+
 import { GoDot, GoDotFill } from "react-icons/go";
 
 import { Member } from "@/generated/prisma";
@@ -12,7 +14,7 @@ const PresenceDot = ({ member }: Props) => {
 
 	const isOnline = members.indexOf(member.userId) !== -1;
 
-	if (!isOnline) return;
+	if (!isOnline) return null;
 
 	return (
 		<>

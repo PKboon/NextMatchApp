@@ -19,9 +19,9 @@ export async function POST(request: Request) {
 			user_id: session.user.id,
 		};
 
-		const aurhResponse = pusherServer.authorizeChannel(socketId, channel, data);
+		const authResponse = pusherServer.authorizeChannel(socketId, channel, data);
 
-		return NextResponse.json(aurhResponse);
+		return NextResponse.json(authResponse);
 	} catch (error) {
 		console.log(error);
 		return new Response("Something went wrong", { status: 500 });

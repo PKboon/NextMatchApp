@@ -3,7 +3,7 @@
 import { clsx } from "clsx";
 import { useEffect, useRef } from "react";
 
-import PresenseAvatar from "@/components/PresenseAvatar";
+import PresenceAvatar from "@/components/PresenceAvatar";
 import { timeAgo, transformImageUrl } from "@/lib/util";
 import { MessageDto } from "@/types";
 
@@ -24,7 +24,7 @@ const MessageBox = ({ message, currentUserId }: Props) => {
 
 	const renderAvatar = () => (
 		<div className="self-end">
-			<PresenseAvatar
+			<PresenceAvatar
 				userId={message.senderId}
 				src={transformImageUrl(message.senderImage) || "/image/user.png"}
 			/>
