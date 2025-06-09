@@ -4,6 +4,7 @@ import { Button } from "@heroui/button";
 import { Select, SelectItem } from "@heroui/select";
 import { Slider } from "@heroui/slider";
 import { Spinner } from "@heroui/spinner";
+import { Switch } from "@heroui/switch";
 
 import { useFilters } from "@/hooks/useFilter";
 
@@ -17,6 +18,7 @@ const Filters = () => {
 		selectAge,
 		selectOrder,
 		selectGender,
+		selectWithPhoto,
 	} = useFilters();
 
 	return (
@@ -54,6 +56,16 @@ const Filters = () => {
 						maxValue={100}
 						defaultValue={filters.ageRange}
 						onChangeEnd={(value) => selectAge(value as number[])}
+					/>
+				</div>
+				<div className="flex flex-col text-sm items-center">
+					With photo
+					<Switch
+						defaultSelected
+						aria-label="With photo switch"
+						size="sm"
+						color="secondary"
+						onChange={selectWithPhoto}
 					/>
 				</div>
 				<div className="w-1/4">

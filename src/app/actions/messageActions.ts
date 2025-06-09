@@ -123,7 +123,7 @@ export async function getMessagesByContainer(
 	try {
 		const userId = await getAuthUserId();
 
-		const where = {
+		const conditions = {
 			[container === "outbox" ? "senderId" : "recipientId"]: userId,
 			...(container === "outbox"
 				? { senderDeleted: false }
@@ -132,7 +132,7 @@ export async function getMessagesByContainer(
 
 		const messages = await prisma.message.findMany({
 			where: {
-				...where,
+				...conditions,
 				...(cursor ? { created: { lt: new Date(cursor) } } : {}),
 			},
 			orderBy: {

@@ -1,6 +1,6 @@
 import { SharedSelection } from "@heroui/react";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useTransition } from "react";
+import { ChangeEvent, useEffect, useTransition } from "react";
 import { FaFemale, FaMale } from "react-icons/fa";
 import { useShallow } from "zustand/shallow";
 
@@ -13,7 +13,7 @@ export const useFilters = () => {
 	const [isPending, startTransition] = useTransition();
 
 	const { filters, setFilters } = useFilterStore();
-	const { ageRange, orderBy, gender } = filters;
+	const { ageRange, orderBy, gender, withPhoto } = filters;
 
 	const { pageNumber, pageSize, setPage, totalCount } = usePaginationStore(
 		useShallow((state) => ({
@@ -35,10 +35,10 @@ export const useFilters = () => {
 	];
 
 	useEffect(() => {
-		if (gender || ageRange || orderBy) {
+		if (gender || ageRange || orderBy || withPhoto) {
 			setPage(1);
 		}
-	}, [ageRange, gender, orderBy, setPage]);
+	}, [ageRange, gender, orderBy, setPage, withPhoto]);
 
 	useEffect(() => {
 		startTransition(() => {
@@ -47,13 +47,23 @@ export const useFilters = () => {
 			if (ageRange) searchParams.set("ageRange", ageRange.toString());
 			if (orderBy) searchParams.set("orderBy", orderBy);
 			if (gender) searchParams.set("gender", gender.join(","));
+			searchParams.set("withPhoto", withPhoto.toString()); // always in url query
 
 			if (pageSize) searchParams.set("pageSize", pageSize.toString());
 			if (pageNumber) searchParams.set("pageNumber", pageNumber.toString());
 
 			router.replace(`${pathname}?${searchParams}`);
 		});
-	}, [ageRange, gender, orderBy, pageNumber, pageSize, pathname, router]);
+	}, [
+		ageRange,
+		gender,
+		orderBy,
+		pageNumber,
+		pageSize,
+		pathname,
+		router,
+		withPhoto,
+	]);
 
 	const handleAgeSelect = (value: number[]) => {
 		setFilters("ageRange", value);
@@ -73,6 +83,10 @@ export const useFilters = () => {
 		);
 	};
 
+	const handleWithPhotoSwitch = (e: ChangeEvent<HTMLInputElement>) => {
+		setFilters("withPhoto", e.target.checked);
+	};
+
 	return {
 		totalCount,
 		isPending,
@@ -82,5 +96,6 @@ export const useFilters = () => {
 		selectAge: handleAgeSelect,
 		selectOrder: handleOrderSelect,
 		selectGender: handleGenderSelect,
+		selectWithPhoto: handleWithPhotoSwitch,
 	};
 };
