@@ -25,7 +25,7 @@ const MemberSidebar = ({ member, navLinks }: Props) => {
 				<Image
 					height={200}
 					width={200}
-					src={transformImageUrl(member.image) || "/image/user.png"}
+					src={transformImageUrl(member.image) || "/images/user.png"}
 					alt="User profile main page"
 					className="rounded-full mt-6 aspect-square object-cover"
 				/>

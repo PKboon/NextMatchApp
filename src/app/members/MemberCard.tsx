@@ -28,7 +28,7 @@ const MemberCard = ({ member, likeIds }: Props) => {
 				isZoomed
 				alt={member.name}
 				width={300}
-				src={transformImageUrl(member.image) || "/image/user.png"}
+				src={transformImageUrl(member.image) || "/images/user.png"}
 				className="aspect-square object-cover"
 			/>
 
