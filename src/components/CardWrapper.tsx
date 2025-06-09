@@ -5,9 +5,9 @@ import { IconType } from "react-icons/lib";
 
 type Props = {
 	body?: ReactNode;
-	headerIcon: IconType;
+	headerIcon?: IconType;
 	headerText: string;
-	subHeaderText: string;
+	subHeaderText?: string;
 	action?: () => void;
 	actionLabel?: string;
 };
@@ -26,7 +26,7 @@ const CardWrapper = ({
 				<CardHeader className="flex flex-col items-center justify-center">
 					<div className="flex flex-col gap-2 items-center text-secondary">
 						<div className="flex flex-row items-center gap-3">
-							<Icon size={30} />
+							{Icon && <Icon size={30} />}
 							<h1 className="text-3xl font-semibold">{headerText}</h1>
 						</div>
 						{subHeaderText && (
