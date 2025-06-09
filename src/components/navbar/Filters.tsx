@@ -34,13 +34,13 @@ const Filters = () => {
 				</div>
 				<div className="flex gap-2 items-center">
 					<div>Gender:</div>
-					{genderList.map(({ value, icon: Icon }) => (
+					{genderList.map(({ key, icon: Icon }) => (
 						<Button
-							key={value}
+							key={key}
 							size="sm"
 							isIconOnly
-							color={filters.gender.includes(value) ? "secondary" : "default"}
-							onPress={() => selectGender(value)}
+							color={filters.gender.includes(key) ? "secondary" : "default"}
+							onPress={() => selectGender(key)}
 						>
 							<Icon size={24} />
 						</Button>

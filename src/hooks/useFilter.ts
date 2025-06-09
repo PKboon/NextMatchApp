@@ -30,8 +30,8 @@ export const useFilters = () => {
 	];
 
 	const genderList = [
-		{ value: "male", icon: FaMale },
-		{ value: "female", icon: FaFemale },
+		{ label: "Male", key: "male", icon: FaMale },
+		{ label: "Female", key: "female", icon: FaFemale },
 	];
 
 	useEffect(() => {
