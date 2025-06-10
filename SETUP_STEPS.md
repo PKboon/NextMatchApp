@@ -199,3 +199,31 @@ For email verification after registeration
 ### Note
 
 The email might be in spam
+
+## 11. Set up Github login
+
+1. Go to you Github account > Developer settings > OAuth Apps
+2. Click `New OAuth App` and enter the following
+   - **Application name**: your app's name
+   - **Homepage URL**: `http://localhost:3000`
+   - **Authorization callback URL**: you can find this URL by going to `http://localhost:3000/api/auth/providers` in your browser and look for `callbackUrl` for `github`
+3. Click `Register application` and save Client ID and Client secret in the `.env` as:
+   ```
+   GITHUB_CLIENT_ID=
+   GITHUB_CLIENT_SECRET=
+   ```
+4. Add the following to `auth.config.ts`
+
+   ```typescript
+   import Github from "next-auth/providers/github";
+
+   providers: [
+   	Github({
+   		clientId: process.env.GITHUB_CLIENT_ID,
+   		clientSecret: process.env.GITHUB_CLIENT_SECRET,
+   	}),
+      ...
+   ]
+   ```
+
+5. See [`SocialLogin.tsx`](<./src/app/(auth)/login/SocialLogin.tsx>) on how to use it
