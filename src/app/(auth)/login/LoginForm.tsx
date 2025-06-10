@@ -2,7 +2,9 @@
 
 import { Button } from "@heroui/button";
 import { Card, CardBody, CardHeader } from "@heroui/card";
+import { Divider } from "@heroui/divider";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { GiPadlock } from "react-icons/gi";
@@ -11,6 +13,8 @@ import { signInUser } from "@/app/actions/authActions";
 import { TextInput } from "@/components/ui/TextInput";
 import { LoginSchema, loginSchema } from "@/lib/schemas/loginSchema";
 import { handleFormServerErrors } from "@/lib/util";
+
+import SocialLogin from "./SocialLogin";
 
 const LoginForm = () => {
 	const router = useRouter();
@@ -71,6 +75,11 @@ const LoginForm = () => {
 						>
 							Log In
 						</Button>
+						<Divider />
+						<SocialLogin />
+						<div className="felx justify-center hover:underline text-sm text-center">
+							<Link href="/forgot-password">Forgot password?</Link>
+						</div>
 					</div>
 				</form>
 			</CardBody>

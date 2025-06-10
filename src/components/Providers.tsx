@@ -12,9 +12,11 @@ import { usePresenceChannel } from "@/hooks/usePresenceChannel";
 const Providers = ({
 	children,
 	userId,
+	profileComplete,
 }: {
 	children: ReactNode;
 	userId: string | null;
+	profileComplete: boolean;
 }) => {
 	const updateUnreadCount = useMessageStore((state) => state.updateUnreadCount);
 
@@ -33,8 +35,8 @@ const Providers = ({
 		});
 	}, [setUnreadCount, userId]);
 
-	usePresenceChannel(userId);
-	useNotificationChannel(userId);
+	usePresenceChannel(userId, profileComplete);
+	useNotificationChannel(userId, profileComplete);
 
 	return (
 		<HeroUIProvider>

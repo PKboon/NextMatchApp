@@ -3,32 +3,73 @@
 import { Button } from "@heroui/button";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import { GiMatchTip } from "react-icons/gi";
 
 import { registerUser } from "@/app/actions/authActions";
-import { TextInput } from "@/components/ui/TextInput";
-import { RegisterSchema, registerSchema } from "@/lib/schemas/registerSchema";
+import {
+	ProfileSchema,
+	profileSchema,
+	RegisterSchema,
+	registerSchema,
+} from "@/lib/schemas/registerSchema";
 import { handleFormServerErrors } from "@/lib/util";
 
+import ProfileForm from "./ProfileForm";
+import UserDetailsForm from "./UserDetailsForm";
+
 const RegisterForm = () => {
-	const {
-		control,
-		handleSubmit,
-		setError,
-		formState: { errors, isValid, isSubmitting },
-	} = useForm<RegisterSchema>({
+	const router = useRouter();
+	const [activeStep, setActiveStep] = useState(0);
+
+	const registerMedthods = useForm<RegisterSchema>({
 		resolver: zodResolver(registerSchema),
 		mode: "onTouched",
 	});
 
-	const onSubmit = async (data: RegisterSchema) => {
-		const result = await registerUser(data);
+	const profileMedthods = useForm<ProfileSchema>({
+		resolver: zodResolver(profileSchema),
+		mode: "onTouched",
+	});
+
+	const onSubmit = async () => {
+		const result = await registerUser({
+			...registerMedthods.getValues(),
+			...profileMedthods.getValues(),
+		});
 
 		if (result.status === "success") {
-			console.log("yay");
+			router.push("/register/success");
 		} else {
-			handleFormServerErrors(result, setError);
+			handleFormServerErrors(
+				result,
+				registerMedthods.setError || profileMedthods.setError
+			);
+		}
+	};
+
+	const getStepContent = (step: number) => {
+		switch (step) {
+			case 0:
+				return <UserDetailsForm />;
+			case 1:
+				return <ProfileForm />;
+			default:
+				return "Unknown step";
+		}
+	};
+
+	const onBack = () => {
+		setActiveStep((prev) => prev - 1);
+	};
+
+	const onNext = async () => {
+		if (activeStep === 1) {
+			await onSubmit();
+		} else {
+			setActiveStep((prev) => prev + 1);
 		}
 	};
 
@@ -44,32 +85,55 @@ const RegisterForm = () => {
 				</div>
 			</CardHeader>
 			<CardBody>
-				<form onSubmit={handleSubmit(onSubmit)}>
-					<div className="space-y-4">
-						<TextInput control={control} label="Name" name="name" />
-						<TextInput control={control} label="Email" name="email" />
-						<TextInput
-							control={control}
-							label="Password"
-							name="password"
-							type="password"
-						/>
-						{errors.root?.serverError && (
-							<p className="text-danger text-sm">
-								{errors.root.serverError.message}
-							</p>
-						)}
-						<Button
-							isLoading={isSubmitting}
-							isDisabled={!isValid}
-							fullWidth
-							color="secondary"
-							type="submit"
-						>
-							Register
-						</Button>
-					</div>
-				</form>
+				<FormProvider
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					{...((activeStep === 0 ? registerMedthods : profileMedthods) as any)}
+				>
+					<form
+						onSubmit={
+							activeStep === 1
+								? profileMedthods.handleSubmit(onNext)
+								: registerMedthods.handleSubmit(onNext)
+						}
+						className="space-y-4"
+					>
+						<div className="space-y-4">
+							{getStepContent(activeStep)}
+
+							{(registerMedthods.formState.errors.root?.serverError ||
+								profileMedthods.formState.errors.root?.serverError) && (
+								<p className="text-danger text-sm">
+									{registerMedthods.formState.errors.root?.serverError
+										.message ||
+										profileMedthods.formState.errors.root?.serverError.message}
+								</p>
+							)}
+
+							<div className="flex item-center gap-6">
+								{activeStep === 1 && (
+									<Button onPress={onBack} fullWidth>
+										Back
+									</Button>
+								)}
+								<Button
+									isLoading={
+										activeStep === 1 && profileMedthods.formState.isSubmitting
+									}
+									isDisabled={
+										activeStep === 1
+											? !profileMedthods.formState.isValid
+											: !registerMedthods.formState.isValid
+									}
+									fullWidth
+									color="secondary"
+									type="submit"
+								>
+									{activeStep === 1 ? "Submit" : "Continue"}
+								</Button>
+							</div>
+						</div>
+					</form>
+				</FormProvider>
 			</CardBody>
 		</Card>
 	);

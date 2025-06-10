@@ -48,6 +48,7 @@ const ChatForm = () => {
 					name="text"
 					placeholder="Type a message"
 					variant="faded"
+					autoComplete="off"
 				/>
 				<Button
 					isLoading={isSubmitting}

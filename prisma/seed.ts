@@ -27,6 +27,7 @@ const seedMember = async () => {
 				image,
 				emailVerified: new Date(),
 				passwordHash: await hash("password", 10),
+				profileComplete: true,
 				member: {
 					create: {
 						name,

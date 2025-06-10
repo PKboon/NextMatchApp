@@ -1,17 +1,11 @@
-import { Card, CardBody, CardHeader } from "@heroui/card";
+import CardWrapper from "./CardWrapper";
 
 const EmptyState = () => {
 	return (
-		<div className="flex justify-center items-center mt-20">
-			<Card className="p-5">
-				<CardHeader className="text-3xl text-secondary">
-					There are no results for this filter
-				</CardHeader>
-				<CardBody className="text-center">
-					Please select a different filter
-				</CardBody>
-			</Card>
-		</div>
+		<CardWrapper
+			headerText="There are no results for this filter"
+			subHeaderText="Please select a different filter"
+		/>
 	);
 };
 export default EmptyState;
