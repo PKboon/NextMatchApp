@@ -10,6 +10,7 @@ type Props = {
 	subHeaderText?: string;
 	action?: () => void;
 	actionLabel?: string;
+	footer?: ReactNode;
 };
 
 const CardWrapper = ({
@@ -19,6 +20,7 @@ const CardWrapper = ({
 	subHeaderText,
 	action,
 	actionLabel,
+	footer,
 }: Props) => {
 	return (
 		<div className="flex items-center justify-center vertical-center">
@@ -35,11 +37,18 @@ const CardWrapper = ({
 					</div>
 				</CardHeader>
 				{body && <CardBody>{body}</CardBody>}
-				{action && (
+				{(action || footer) && (
 					<CardFooter>
-						<Button onPress={action} color="secondary" className="w-40 mx-auto">
-							{actionLabel}
-						</Button>
+						{action && (
+							<Button
+								onPress={action}
+								color="secondary"
+								className="w-40 mx-auto"
+							>
+								{actionLabel}
+							</Button>
+						)}
+						{footer && <>{footer}</>}
 					</CardFooter>
 				)}
 			</Card>

@@ -4,19 +4,40 @@ import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
 
 import { auth, signIn, signOut } from "@/auth";
-import { User } from "@/generated/prisma";
+import { TokenType, User } from "@/generated/prisma";
+import { sendVerificationEmail } from "@/lib/mail";
 import { prisma } from "@/lib/prisma";
 import { LoginSchema } from "@/lib/schemas/loginSchema";
 import {
 	combinedRegisterSchema,
 	RegisterSchema,
 } from "@/lib/schemas/registerSchema";
+import { generateToken, getTokenByToken } from "@/lib/tokens";
 import { ActionResult } from "@/types";
 
 export async function signInUser(
 	data: LoginSchema
 ): Promise<ActionResult<string>> {
 	try {
+		const existingUser = await getUserByEmail(data.email);
+
+		if (!existingUser || !existingUser.email)
+			return { status: "error", error: "Invalid credentials" };
+
+		if (!existingUser.emailVerified) {
+			const token = await generateToken(
+				existingUser.email,
+				TokenType.VERIFICATION
+			);
+
+			await sendVerificationEmail(token.email, token.token);
+
+			return {
+				status: "error",
+				error: "Please verify your email address before logging in",
+			};
+		}
+
 		await signIn("credentials", {
 			email: data.email,
 			password: data.password,
@@ -76,6 +97,7 @@ export async function registerUser(
 				name,
 				email,
 				passwordHash: hashedPassword,
+				profileComplete: true,
 				member: {
 					create: {
 						name,
@@ -88,6 +110,16 @@ export async function registerUser(
 				},
 			},
 		});
+
+		const verificationToken = await generateToken(
+			email,
+			TokenType.VERIFICATION
+		);
+
+		await sendVerificationEmail(
+			verificationToken.email,
+			verificationToken.token
+		);
 
 		return { status: "success", data: user };
 	} catch (error) {
@@ -111,8 +143,40 @@ export async function getUserById(id: string) {
 export async function getAuthUserId() {
 	const session = await auth();
 	const userId = session?.user?.id;
-
 	if (!userId) throw new Error("Unauthorized");
 
 	return userId;
+}
+
+export async function verifyEmail(
+	token: string
+): Promise<ActionResult<string>> {
+	try {
+		const existingToken = await getTokenByToken(token);
+		if (!existingToken) {
+			return { status: "error", error: "Invalid token" };
+		}
+
+		const hasExpired = new Date() > existingToken.expires;
+		if (hasExpired) {
+			return { status: "error", error: "Token has expired" };
+		}
+
+		const existingUser = await getUserByEmail(existingToken.email);
+		if (!existingUser) {
+			return { status: "error", error: "User not found" };
+		}
+
+		await prisma.user.update({
+			where: { id: existingUser.id },
+			data: { emailVerified: new Date() },
+		});
+
+		await prisma.token.delete({ where: { id: existingToken.id } });
+
+		return { status: "success", data: "Successfully verified" };
+	} catch (error) {
+		console.log(error);
+		throw error;
+	}
 }

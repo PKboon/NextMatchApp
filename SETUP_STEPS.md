@@ -133,6 +133,12 @@ In the `node_modules/@heroui/react`, it has `"use strict";`, but `node_modules/@
   ```
 
 - See [Prisma's Seeding documentation](https://www.prisma.io/docs/orm/prisma-migrate/workflows/seeding) if want to seed data.
+- If you add columns but already have the seeded data in the tables, run the following to reser the database:
+  ```bash
+  npx prisma migrate reset --skip-seed
+  npx prisma db push
+  npx prisma db seed
+  ```
 
 ## 6. Set up Session and Middleware
 
@@ -140,6 +146,8 @@ In the `node_modules/@heroui/react`, it has `"use strict";`, but `node_modules/@
 2. Follow [Next.js Middleware documentation](https://nextjs.org/docs/app/building-your-application/routing/middleware)
 
 ## 7. Set up Cloudinary
+
+For storing image.
 
 1. Create an account
 2. Run `npm install cloudinary`
@@ -160,19 +168,34 @@ In the `node_modules/@heroui/react`, it has `"use strict";`, but `node_modules/@
 
 ## 8. Set up Pusher
 
+For real-time features.
+
 1. Run `npm i pusher` for server side
 2. Run `npm i pusher-js` for client side
 3. Add the following to `.env`:
    ```
-   NEXT_PUBLIC_PUSHER_CLUSTER=
    NEXT_PUBLIC_PUSHER_APP_KEY=
    PUSHER_APP_ID=
    PUSHER_SECRET=
    ```
 4. Create [`src/lib/pusher`](./src/lib/pusher.ts)
 
-## 9. Set up Zustand
+## 9. Set up [Zustand](https://zustand.docs.pmnd.rs/guides/nextjs)
+
+For state management.
 
 1. Run `npm install zustand`
 2. Add all hooks to `Provider.tsx`
    - They don't have to be in the `Providers.tsx`, but they must be in a client component and import that component to the main layout
+
+## 10. Set up [Resend](https://resend.com/docs/send-with-nextjs)
+
+For email verification after registeration
+
+1. Create an account at https://resend.com/
+2. Create an API key and save it in the `.env` as `RESEND_API_KEY`
+3. Run `npm i resend`
+
+### Note
+
+The email might be in spam
