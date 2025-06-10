@@ -148,7 +148,9 @@ npx prisma db seed
 
 #### 2. Create `migrations`
 
-- Run `npx prisma migrate dev -n Initial --create-only` (`Initial` is the name of the migration which can be anything that you want)
+- Run `npx prisma migrate dev -n Initial --create-only`
+  - `Initial` is the name of the migration which can be anything that you want
+  - Use `--create-only` when needed
 - Run `npx prisma reset`
 - A `migrations` folder will be created in the `/prisma` folder
 

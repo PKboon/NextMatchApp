@@ -16,12 +16,12 @@ const MemberEditPhotoPage = async () => {
 	return (
 		<CardInnerWrapper
 			header={
-				<>
+				<div className="flex justify-between items-center w-full">
 					<div className="text-2xl font-semibold text-secondary">
 						Edit Photos
 					</div>
 					<MemberPhotoUpload />
-				</>
+				</div>
 			}
 			body={
 				<MemberPhotos

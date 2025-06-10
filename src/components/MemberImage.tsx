@@ -1,6 +1,7 @@
 "use client";
 
 import { Image } from "@heroui/image";
+import clsx from "clsx";
 import { CldImage } from "next-cloudinary";
 
 import { Photo } from "@/generated/prisma";
@@ -20,7 +21,9 @@ const MemberImage = ({ photo }: Props) => {
 					height={300}
 					crop="fill"
 					gravity="faces"
-					className="rounded-2xl"
+					className={clsx("rounded-2xl", {
+						"opacity-40": !photo.isApproved,
+					})}
 					priority
 				/>
 			) : (
@@ -29,6 +32,13 @@ const MemberImage = ({ photo }: Props) => {
 					width={220}
 					src={photo?.url || "/images/user.png"}
 				/>
+			)}
+			{!photo?.isApproved && (
+				<div className="absolute bottom-2 w-full bg-slate-200 p-1">
+					<div className="flex justify-center text-danger font-semibold">
+						Approval pending
+					</div>
+				</div>
 			)}
 		</div>
 	);

@@ -1,5 +1,6 @@
 "use client";
 
+import { addToast } from "@heroui/toast";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -27,9 +28,20 @@ const MemberPhotos = ({ photos, editing, mainImageUrl }: Props) => {
 	const onSetMain = async (photo: Photo) => {
 		if (photo.url === mainImageUrl) return null;
 		setLoading({ type: "main", isLoading: true, id: photo.id });
-		await setMainImage(photo);
-		router.refresh();
-		setLoading({ type: "", isLoading: false, id: "" });
+
+		try {
+			await setMainImage(photo);
+			router.refresh();
+		} catch (error: unknown) {
+			addToast({
+				description:
+					error instanceof Error ? error.message : "Something went wrong",
+				color: "danger",
+				hideCloseButton: true,
+			});
+		} finally {
+			setLoading({ type: "", isLoading: false, id: "" });
+		}
 	};
 
 	const onDelete = async (photo: Photo) => {

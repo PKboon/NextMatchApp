@@ -29,6 +29,7 @@ const seedMember = async () => {
 						photos: {
 							create: {
 								url: member.image,
+								isApproved: true,
 							},
 						},
 					},
