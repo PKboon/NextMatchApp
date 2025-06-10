@@ -3,6 +3,7 @@
 import { Button } from "@heroui/button";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { GiPadlock } from "react-icons/gi";
@@ -71,6 +72,9 @@ const LoginForm = () => {
 						>
 							Log In
 						</Button>
+						<div className="felx justify-center hover:underline text-sm text-center">
+							<Link href="/forgot-password">Forgot password?</Link>
+						</div>
 					</div>
 				</form>
 			</CardBody>

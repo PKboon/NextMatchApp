@@ -25,7 +25,7 @@ const VerifyEmailPage = async ({
 					</div>
 				</div>
 			}
-			footer={<ResultMessage result={result} />}
+			footer={result && <ResultMessage result={result} />}
 		/>
 	);
 };
