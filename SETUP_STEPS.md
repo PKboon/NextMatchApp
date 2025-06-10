@@ -200,19 +200,9 @@ For email verification after registeration
 
 The email might be in spam
 
-## 11. Set up Github login
+## 11. Set up Github OAuth
 
-1. Go to you Github account > Developer settings > OAuth Apps
-2. Click `New OAuth App` and enter the following
-   - **Application name**: your app's name
-   - **Homepage URL**: `http://localhost:3000`
-   - **Authorization callback URL**: you can find this URL by going to `http://localhost:3000/api/auth/providers` in your browser and look for `callbackUrl` for `github`
-3. Click `Register application` and save Client ID and Client secret in the `.env` as:
-   ```
-   GITHUB_CLIENT_ID=
-   GITHUB_CLIENT_SECRET=
-   ```
-4. Add the following to `auth.config.ts`
+1. Add the following to `auth.config.ts`
 
    ```typescript
    import Github from "next-auth/providers/github";
@@ -226,4 +216,51 @@ The email might be in spam
    ]
    ```
 
+2. Go to you Github account > Developer settings > OAuth Apps
+3. Click `New OAuth App` and enter the following
+   - **Application name**: your app's name
+   - **Homepage URL**: `http://localhost:3000`
+   - **Authorization callback URL**: you can find this URL by going to `http://localhost:3000/api/auth/providers` in your browser and look for `callbackUrl` for `github`
+4. Click `Register application` and save Client ID and Client secret in the `.env` as:
+
+   ```
+   GITHUB_CLIENT_ID=
+   GITHUB_CLIENT_SECRET=
+   ```
+
 5. See [`SocialLogin.tsx`](<./src/app/(auth)/login/SocialLogin.tsx>) on how to use it
+
+## 12. Set up Google OAuth
+
+1. Add the following to `auth.config.ts`
+
+   ```typescript
+   import Google from "next-auth/providers/google";
+
+   providers: [
+   	Google({
+   		clientId: process.env.GOOGLE_CLIENT_ID,
+   		clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+   	}),
+      ...
+   ]
+   ```
+
+2. Go to **Google Developer Console** (must have a google account)
+3. Create a project
+4. A toast will appear on the top right, click Select
+5. Go to APIs & Services > OAuth consent screen > create one
+   - **App Information**: enter a name and an email
+   - **Audience**: select External
+   - **Contact Information**: enter an email
+6. Click `Creat OAuth client`
+   - **Application type**: select Web application
+   - **Name**: enter a name
+   - **Authorized JavaScript origins**: `http://localhost:3000`
+   - **Authorized redirect URIs**: you can find this URL by going to `http://localhost:3000/api/auth/providers` in your browser and look for `callbackUrl` for `google`
+7. Click `Creat`, go to the created client, and save Client ID and Client secret in the `.env` as:
+
+   ```
+   GOOGLE_CLIENT_ID=
+   GOOGLE_CLIENT_SECRET=
+   ```
