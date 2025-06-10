@@ -2,6 +2,7 @@
 
 import { HeroUIProvider } from "@heroui/react";
 import { ToastProvider } from "@heroui/toast";
+import { SessionProvider } from "next-auth/react";
 import { ReactNode, useCallback, useEffect } from "react";
 
 import { getUnreadMessageCount } from "@/app/actions/messageActions";
@@ -39,20 +40,22 @@ const Providers = ({
 	useNotificationChannel(userId, profileComplete);
 
 	return (
-		<HeroUIProvider>
-			{children}
-			<ToastProvider
-				toastProps={{
-					radius: "md",
-					variant: "flat",
-					timeout: 3000,
-					classNames: {
-						closeButton:
-							"opacity-100 absolute right-4 top-1/2 -translate-y-1/2",
-					},
-				}}
-			/>
-		</HeroUIProvider>
+		<SessionProvider>
+			<HeroUIProvider>
+				{children}
+				<ToastProvider
+					toastProps={{
+						radius: "md",
+						variant: "flat",
+						timeout: 3000,
+						classNames: {
+							closeButton:
+								"opacity-100 absolute right-4 top-1/2 -translate-y-1/2",
+						},
+					}}
+				/>
+			</HeroUIProvider>
+		</SessionProvider>
 	);
 };
 

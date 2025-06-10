@@ -7,41 +7,28 @@ const prisma = new PrismaClient();
 
 const seedMember = async () => {
 	return membersData.map(async (member) => {
-		const {
-			email,
-			name,
-			gender,
-			image,
-			description,
-			city,
-			country,
-			dateOfBirth,
-			created,
-			lastActive,
-		} = member;
-
 		return prisma.user.create({
 			data: {
-				email,
-				name,
-				image,
+				email: member.email,
+				name: member.name,
+				image: member.image,
 				emailVerified: new Date(),
 				passwordHash: await hash("password", 10),
 				profileComplete: true,
 				member: {
 					create: {
-						name,
-						gender,
-						description,
-						city,
-						country,
-						image,
-						dateOfBirth: new Date(dateOfBirth),
-						created: new Date(created),
-						updated: new Date(lastActive),
+						name: member.name,
+						gender: member.gender,
+						description: member.description,
+						city: member.city,
+						country: member.country,
+						image: member.image,
+						dateOfBirth: new Date(member.dateOfBirth),
+						created: new Date(member.created),
+						updated: new Date(member.lastActive),
 						photos: {
 							create: {
-								url: image,
+								url: member.image,
 							},
 						},
 					},
@@ -51,8 +38,21 @@ const seedMember = async () => {
 	});
 };
 
+async function seedAdmin() {
+	return prisma.user.create({
+		data: {
+			email: "admin@test.com",
+			emailVerified: new Date(),
+			name: "Admin",
+			passwordHash: await hash("password", 10),
+			role: "ADMIN",
+		},
+	});
+}
+
 const main = async () => {
 	await seedMember();
+	await seedAdmin();
 };
 
 main()
