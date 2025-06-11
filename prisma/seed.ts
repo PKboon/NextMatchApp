@@ -52,8 +52,13 @@ async function seedAdmin() {
 }
 
 const main = async () => {
-	await seedMember();
-	await seedAdmin();
+	if (
+		process.env.RUN_SEED === "true" ||
+		process.env.NODE_ENV === "development"
+	) {
+		await seedMember();
+		await seedAdmin();
+	}
 };
 
 main()
