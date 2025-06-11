@@ -4,11 +4,11 @@ import { Button } from "@heroui/button";
 import { Card, CardBody, CardFooter } from "@heroui/card";
 import { Divider } from "@heroui/divider";
 import { Image } from "@heroui/image";
+import { Member } from "generated";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import PresenceDot from "@/components/PresenceDot";
-import { Member } from "@/generated/prisma";
 import { calculateAge, transformImageUrl } from "@/lib/util";
 
 type Props = {

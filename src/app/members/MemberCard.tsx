@@ -2,11 +2,11 @@
 
 import { Card, CardFooter } from "@heroui/card";
 import { Image } from "@heroui/image";
+import { Member } from "generated";
 import Link from "next/link";
 
 import PresenceDot from "@/components/PresenceDot";
 import LikeButton from "@/components/ui/LikeButton";
-import { Member } from "@/generated/prisma";
 import { calculateAge, transformImageUrl } from "@/lib/util";
 
 type Props = {

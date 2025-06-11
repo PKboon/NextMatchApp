@@ -3,12 +3,12 @@
 import { Image } from "@heroui/image";
 import { addToast, Button } from "@heroui/react";
 import clsx from "clsx";
+import { Photo } from "generated";
 import { useRouter } from "next/navigation";
 import { CldImage } from "next-cloudinary";
 import { ImCheckmark, ImCross } from "react-icons/im";
 
 import { approvePhoto, rejectPhoto } from "@/app/actions/adminActions";
-import { Photo } from "@/generated/prisma";
 import { useRole } from "@/hooks/useRole";
 
 type Props = {

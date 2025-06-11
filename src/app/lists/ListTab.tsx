@@ -2,11 +2,9 @@
 
 import { Tab, Tabs } from "@heroui/tabs";
 import { Key } from "@react-types/shared";
+import { Member } from "generated";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
-
-import LoadingComponent from "@/components/LoadingComponent";
-import { Member } from "@/generated/prisma";
 
 import MemberCard from "../members/MemberCard";
 
