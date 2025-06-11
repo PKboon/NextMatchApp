@@ -58,7 +58,7 @@ const MemberImage = ({ photo }: Props) => {
 	if (!photo) return null;
 
 	return (
-		<div className="cursor-pointer" onClick={() => onOpen()}>
+		<div>
 			{photo?.publicId ? (
 				<CldImage
 					alt="Image of member"
@@ -67,16 +67,19 @@ const MemberImage = ({ photo }: Props) => {
 					height={300}
 					crop="fill"
 					gravity="faces"
-					className={clsx("rounded-2xl", {
+					className={clsx("rounded-2xl, cursor-pointer", {
 						"opacity-40": !photo.isApproved && !isAdmin,
 					})}
 					priority
+					onClick={() => onOpen()}
 				/>
 			) : (
 				<Image
 					alt="Image of user"
 					width={220}
 					src={photo?.url || "/images/user.png"}
+					className="cursor-pointer"
+					onClick={() => onOpen()}
 				/>
 			)}
 			{!photo?.isApproved && !isAdmin && (

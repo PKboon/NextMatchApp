@@ -25,14 +25,10 @@ const AppModal = ({
 	footerButtons,
 	imageModal,
 }: Props) => {
-	const handleClose = () => {
-		setTimeout(() => onClose(), 10);
-	};
-
 	return (
 		<Modal
 			isOpen={isOpen}
-			onClose={handleClose}
+			onClose={onClose}
 			placement="top-center"
 			classNames={{
 				base: `${imageModal ? "border-2 border-white" : ""}`,
