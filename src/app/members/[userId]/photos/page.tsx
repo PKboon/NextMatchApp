@@ -1,7 +1,6 @@
-import { Image } from "@heroui/image";
-
 import { getMemberPhotosByUserId } from "@/app/actions/memberActions";
 import CardInnerWrapper from "@/components/CardInnerWrapper";
+import MemberPhotos from "@/components/MemberPhotos";
 
 const MemberPhotosPage = async ({
 	params,
@@ -11,23 +10,9 @@ const MemberPhotosPage = async ({
 	const { userId } = await params;
 	const photos = await getMemberPhotosByUserId(userId);
 
-	const body = (
-		<div className="grid grid-cols-5 gap-3">
-			{photos &&
-				photos.map((photo) => (
-					<div key={photo.id}>
-						<Image
-							width={300}
-							src={photo.url}
-							alt="Image of member"
-							className="object-cover aspect-square"
-						/>
-					</div>
-				))}
-		</div>
+	return (
+		<CardInnerWrapper header="Photos" body={<MemberPhotos photos={photos} />} />
 	);
-
-	return <CardInnerWrapper header="Photos" body={body} />;
 };
 
 export default MemberPhotosPage;
