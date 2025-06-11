@@ -107,7 +107,6 @@ In the `node_modules/@heroui/react`, it has `"use strict";`, but `node_modules/@
    ```
    generator client {
       provider = "prisma-client-js"
-      output   = "../node_modules/generated" // <-- here
    }
    ```
 
@@ -116,7 +115,7 @@ In the `node_modules/@heroui/react`, it has `"use strict";`, but `node_modules/@
 11. Create `src/lib/prisma.ts` with the following code:
 
     ```ts
-    import { PrismaClient } from "generated";
+    import { PrismaClient } from "@prisma/client";
 
     const globalForPrisma = global as unknown as { prisma: PrismaClient };
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { addToast } from "@heroui/toast";
-import { Photo } from "generated";
+import { Photo } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 

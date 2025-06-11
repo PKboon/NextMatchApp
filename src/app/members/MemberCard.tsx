@@ -2,7 +2,7 @@
 
 import { Card, CardFooter } from "@heroui/card";
 import { Image } from "@heroui/image";
-import { Member } from "generated";
+import { Member } from "@prisma/client";
 import Link from "next/link";
 import { useState } from "react";
 

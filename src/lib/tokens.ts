@@ -1,4 +1,4 @@
-import { TokenType } from "generated";
+import { TokenType } from "@prisma/client";
 
 import { prisma } from "./prisma";
 

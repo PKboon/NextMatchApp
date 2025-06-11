@@ -2,8 +2,8 @@
 
 import { Spinner } from "@heroui/spinner";
 import { Tab, Tabs } from "@heroui/tabs";
+import { Member } from "@prisma/client";
 import { Key } from "@react-types/shared";
-import { Member } from "generated";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
 

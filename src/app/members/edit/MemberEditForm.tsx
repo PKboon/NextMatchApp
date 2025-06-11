@@ -3,7 +3,7 @@
 import { Button } from "@heroui/button";
 import { addToast } from "@heroui/toast";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Member } from "generated";
+import { Member } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";

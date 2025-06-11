@@ -1,7 +1,7 @@
 "use server";
 
+import { TokenType, User } from "@prisma/client";
 import bcrypt from "bcryptjs";
-import { TokenType, User } from "generated";
 import { AuthError } from "next-auth";
 
 import { auth, signIn, signOut } from "@/auth";

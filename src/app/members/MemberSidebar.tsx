@@ -4,7 +4,7 @@ import { Button } from "@heroui/button";
 import { Card, CardBody, CardFooter } from "@heroui/card";
 import { Divider } from "@heroui/divider";
 import { Image } from "@heroui/image";
-import { Member } from "generated";
+import { Member } from "@prisma/client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
