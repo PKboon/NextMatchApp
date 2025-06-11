@@ -1,7 +1,9 @@
 "use client";
 
+import { Button } from "@heroui/button";
 import { Image } from "@heroui/image";
-import { addToast, Button } from "@heroui/react";
+import { useDisclosure } from "@heroui/modal";
+import { addToast } from "@heroui/toast";
 import clsx from "clsx";
 import { Photo } from "generated";
 import { useRouter } from "next/navigation";
@@ -10,6 +12,8 @@ import { ImCheckmark, ImCross } from "react-icons/im";
 
 import { approvePhoto, rejectPhoto } from "@/app/actions/adminActions";
 import { useRole } from "@/hooks/useRole";
+
+import AppModal from "./AppModal";
 
 type Props = {
 	photo: Photo | null;
@@ -20,6 +24,8 @@ const MemberImage = ({ photo }: Props) => {
 
 	const { role } = useRole();
 	const isAdmin = role === "ADMIN";
+
+	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const approve = async (photoId: string) => {
 		try {
@@ -52,7 +58,7 @@ const MemberImage = ({ photo }: Props) => {
 	if (!photo) return null;
 
 	return (
-		<div>
+		<div className="cursor-pointer" onClick={() => onOpen()}>
 			{photo?.publicId ? (
 				<CldImage
 					alt="Image of member"
@@ -102,6 +108,33 @@ const MemberImage = ({ photo }: Props) => {
 					</Button>
 				</div>
 			)}
+			<AppModal
+				imageModal={true}
+				isOpen={isOpen}
+				onClose={onClose}
+				body={
+					<>
+						{photo?.publicId ? (
+							<CldImage
+								alt="Image of member"
+								src={photo.publicId}
+								width={750}
+								height={750}
+								className={clsx("rounded-2xl", {
+									"opacity-40": !photo.isApproved && !isAdmin,
+								})}
+								priority
+							/>
+						) : (
+							<Image
+								alt="Image of user"
+								width={750}
+								src={photo?.url || "/images/user.png"}
+							/>
+						)}
+					</>
+				}
+			/>
 		</div>
 	);
 };
