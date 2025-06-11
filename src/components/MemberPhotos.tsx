@@ -1,11 +1,11 @@
 "use client";
 
 import { addToast } from "@heroui/toast";
+import { Photo } from "generated";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { deletePhoto, setMainImage } from "@/app/actions/userActions";
-import { Photo } from "@/generated/prisma";
 
 import MemberImage from "./MemberImage";
 import DeleteButton from "./ui/DeleteButton";

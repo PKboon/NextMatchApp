@@ -68,7 +68,7 @@ In the `node_modules/@heroui/react`, it has `"use strict";`, but `node_modules/@
 
 1. Run `react-hook-form zod @hookform/resolvers`
 
-## 5. Set up Authentication and Database
+## 5. Set up Authentication and Database (with Prisma ORM)
 
 1. Follow [Auth.js setup steps](https://authjs.dev/getting-started/installation?framework=Next.js)
 2. Follow [Prisma Adapter installation commands](https://authjs.dev/getting-started/adapters/prisma#installation)
@@ -102,13 +102,21 @@ In the `node_modules/@heroui/react`, it has `"use strict";`, but `node_modules/@
    ```
 
 7. Create a Postgres database with [NEON](https://neon.com/) and update the `DATABASE_URL` value in `.env`
+8. In `prisma/schema.prisma`, update `generator` to:
 
-8. Update `prisma/schema.prisma` (see [here](https://authjs.dev/getting-started/adapters/prisma#schema))
-9. Run `npx prisma generate`
-10. Create `src/lib/prisma.ts` with the following code:
+   ```
+   generator client {
+      provider = "prisma-client-js"
+      output   = "../node_modules/generated" // <-- here
+   }
+   ```
+
+9. Update `prisma/schema.prisma` (see [here](https://authjs.dev/getting-started/adapters/prisma#schema))
+10. Run `npx prisma generate`
+11. Create `src/lib/prisma.ts` with the following code:
 
     ```ts
-    import { PrismaClient } from "../generated/prisma";
+    import { PrismaClient } from "generated";
 
     const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
@@ -118,9 +126,9 @@ In the `node_modules/@heroui/react`, it has `"use strict";`, but `node_modules/@
     if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
     ```
 
-11. Run `npx prisma db push`
-12. Run `npx prisma studio` to see the tables
-13. Run `npm i bcryptjs` and `npm i -D @types/bcryptjs`
+12. Run `npx prisma db push`
+13. Run `npx prisma studio` to see the tables
+14. Run `npm i bcryptjs` and `npm i -D @types/bcryptjs`
 
 ### Note
 

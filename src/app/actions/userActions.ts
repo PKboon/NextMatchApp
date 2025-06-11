@@ -1,6 +1,7 @@
 "use server";
 
-import { Member, Photo } from "@/generated/prisma";
+import { Member, Photo } from "generated";
+
 import { cloudinary } from "@/lib/cloudinary";
 import { prisma } from "@/lib/prisma";
 import {

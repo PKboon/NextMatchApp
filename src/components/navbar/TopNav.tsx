@@ -45,13 +45,11 @@ const TopNav = async () => {
 						<span className="text-gray-200">Match</span>
 					</div>
 				</NavbarBrand>
-				{session && (
-					<NavbarContent justify="center">
-						{links.map(({ href, label }) => (
-							<NavLink key={href} href={href} label={label} />
-						))}
-					</NavbarContent>
-				)}
+				<NavbarContent justify="center">
+					{links.map(({ href, label }) => (
+						<NavLink key={href} href={href} label={label} />
+					))}
+				</NavbarContent>
 				<NavbarContent justify="end">
 					{userInfo ? (
 						<UserMenu userInfo={userInfo} />

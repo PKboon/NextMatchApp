@@ -1,3 +1,4 @@
+import { Role } from "generated";
 import { DefaultSession } from "next-auth";
 
 import { Role } from "@/generated/prisma";
