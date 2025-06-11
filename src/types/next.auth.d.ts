@@ -1,8 +1,6 @@
 import { Role } from "generated";
 import { DefaultSession } from "next-auth";
 
-import { Role } from "@/generated/prisma";
-
 declare module "next-auth" {
 	interface User {
 		profileComplete: boolean;
