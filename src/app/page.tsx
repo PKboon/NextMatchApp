@@ -1,25 +1,16 @@
-import { Avatar } from "@heroui/avatar";
-import { Button } from "@heroui/button";
+import { auth } from "@/auth";
+import ClientSession from "@/components/ClientSession";
 
-export default function Home() {
+export default async function Home() {
+	const session = await auth();
 	return (
-		<div>
-			<div className="flex gap-4 items-center">
-				<Button size="sm">Small</Button>
+		<div className="flex justify-around mt-20 gap-6">
+			<div className="bg-green-50 p-10 rounded-xl shadow-md w-1/2 overflow-auto">
+				<strong>Server session data</strong>
 
-				<Avatar
-					size="md"
-					src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-				/>
-				<Avatar
-					size="lg"
-					src="https://i.pravatar.cc/150?u=a04258114e29026302d"
-				/>
-				<Avatar
-					className="w-20 h-20 text-large"
-					src="https://i.pravatar.cc/150?u=a04258114e29026708c"
-				/>
+				{session && <pre>{JSON.stringify(session, null, 2)}</pre>}
 			</div>
+			<ClientSession />
 		</div>
 	);
 }

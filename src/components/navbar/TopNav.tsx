@@ -10,15 +10,19 @@ import FiltersWrapper from "./FiltersWrapper";
 import NavLink from "./NavLink";
 import UserMenu from "./UserMenu";
 
-const navLinks = [
+const memberLinks = [
 	{ href: "/members", label: "Matches" },
 	{ href: "/lists", label: "Lists" },
 	{ href: "/messages", label: "Messages" },
 ];
 
+const adminLinks = [{ href: "/admin/moderation", label: "Photo Moderation" }];
+
 const TopNav = async () => {
 	const session = await auth();
 	const userInfo = session?.user && (await getUserNavInfo());
+
+	const links = session?.user.role === "ADMIN" ? adminLinks : memberLinks;
 
 	return (
 		<>
@@ -42,7 +46,7 @@ const TopNav = async () => {
 					</div>
 				</NavbarBrand>
 				<NavbarContent justify="center">
-					{navLinks.map(({ href, label }) => (
+					{links.map(({ href, label }) => (
 						<NavLink key={href} href={href} label={label} />
 					))}
 				</NavbarContent>

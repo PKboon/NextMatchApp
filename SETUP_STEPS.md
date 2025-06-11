@@ -133,12 +133,26 @@ In the `node_modules/@heroui/react`, it has `"use strict";`, but `node_modules/@
   ```
 
 - See [Prisma's Seeding documentation](https://www.prisma.io/docs/orm/prisma-migrate/workflows/seeding) if want to seed data.
-- If you add columns but already have the seeded data in the tables, run the following to reser the database:
-  ```bash
-  npx prisma migrate reset --skip-seed
-  npx prisma db push
-  npx prisma db seed
-  ```
+
+### Reset the database
+
+There are 2 ways to do.
+
+#### 1. Run the following:
+
+```bash
+npx prisma migrate reset --skip-seed
+npx prisma db push
+npx prisma db seed
+```
+
+#### 2. Create `migrations`
+
+- Run `npx prisma migrate dev -n Initial --create-only`
+  - `Initial` is the name of the migration which can be anything that you want
+  - Use `--create-only` when needed
+- Run `npx prisma reset`
+- A `migrations` folder will be created in the `/prisma` folder
 
 ## 6. Set up Session and Middleware
 
