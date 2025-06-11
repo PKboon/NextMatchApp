@@ -5,6 +5,8 @@ import NextAuth, { NextAuthConfig } from "next-auth";
 import authConfig from "@/auth.config";
 import { prisma } from "@/lib/prisma";
 
+import { Role } from "./generated/prisma";
+
 export const {
 	handlers: { GET, POST },
 	auth,
