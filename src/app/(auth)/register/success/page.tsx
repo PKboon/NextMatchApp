@@ -12,7 +12,7 @@ const RegisterSuccessPage = () => {
 		<CardWrapper
 			headerText="You have successfully registered"
 			headerIcon={FaCheckCircle}
-			subHeaderText="You can now login to the app"
+			subHeaderText="Please verify your email (it might be in your spam box)"
 			action={() => router.push("/login")}
 			actionLabel="Go to login"
 		/>
