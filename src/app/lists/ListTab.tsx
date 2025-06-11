@@ -7,8 +7,6 @@ import { Member } from "generated";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
 
-import LoadingComponent from "@/components/LoadingComponent";
-
 import MemberCard from "../members/MemberCard";
 
 type Props = {
