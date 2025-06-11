@@ -4,10 +4,13 @@ import { Card, CardFooter } from "@heroui/card";
 import { Image } from "@heroui/image";
 import { Member } from "generated";
 import Link from "next/link";
+import { useState } from "react";
 
 import PresenceDot from "@/components/PresenceDot";
 import LikeButton from "@/components/ui/LikeButton";
 import { calculateAge, transformImageUrl } from "@/lib/util";
+
+import { toggleLikeMember } from "../actions/likeActions";
 
 type Props = {
 	member: Member;
@@ -15,7 +18,20 @@ type Props = {
 };
 
 const MemberCard = ({ member, likeIds }: Props) => {
-	const hasLiked = likeIds.includes(member.userId);
+	const [hasLiked, setHasLiked] = useState(likeIds.includes(member.userId));
+	const [isLoading, setIsLoading] = useState(false);
+
+	async function toggleLike() {
+		setIsLoading(true);
+		try {
+			await toggleLikeMember(member.userId, hasLiked);
+			setHasLiked(!hasLiked);
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setIsLoading(false);
+		}
+	}
 
 	const preventLinkAction = (e: React.MouseEvent) => {
 		e.preventDefault();
@@ -34,7 +50,11 @@ const MemberCard = ({ member, likeIds }: Props) => {
 
 			<div onClick={preventLinkAction}>
 				<div className="absolute top-3 right-3 z-50">
-					<LikeButton targetId={member.userId} hasLiked={hasLiked} />
+					<LikeButton
+						isLoading={isLoading}
+						toggleLike={toggleLike}
+						hasLiked={hasLiked}
+					/>
 				</div>
 				<div className="absolute top-2 left-3 z-50">
 					<PresenceDot member={member} />
