@@ -1,8 +1,8 @@
 "use server";
 
 import { addYears } from "date-fns";
+import { Member } from "generated";
 
-import { Member } from "@/generated/prisma";
 import { prisma } from "@/lib/prisma";
 import { GetMemberParams, PaginatedResponse } from "@/types";
 

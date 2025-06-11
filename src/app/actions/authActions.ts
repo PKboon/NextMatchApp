@@ -1,10 +1,10 @@
 "use server";
 
 import bcrypt from "bcryptjs";
+import { TokenType, User } from "generated";
 import { AuthError } from "next-auth";
 
 import { auth, signIn, signOut } from "@/auth";
-import { TokenType, User } from "@/generated/prisma";
 import { sendPasswordResetEmail, sendVerificationEmail } from "@/lib/mail";
 import { prisma } from "@/lib/prisma";
 import { LoginSchema } from "@/lib/schemas/loginSchema";
